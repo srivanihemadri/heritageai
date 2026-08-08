@@ -1,42 +1,69 @@
-from fastapi import Depends, HTTPException, status
-from jose import JWTError
+from fastapi import Depends
+from fastapi.security import OAuth2PasswordBearer
+from jose import JWTError, jwt
 from sqlalchemy.orm import Session
 
-from app.crud.user import get_user_by_id
+from app.core.config import settings
+from app.core.exceptions import UnauthorizedException
 from app.db.session import get_db
-from app.security import oauth2_scheme, decode_access_token
+from app.models.user import User
+
+
+oauth2_scheme = OAuth2PasswordBearer(
+    tokenUrl="/api/v1/auth/login",
+    auto_error=False,
+)
 
 
 def get_current_user(
-    token: str = Depends(oauth2_scheme),
+    token: str | None = Depends(oauth2_scheme),
     db: Session = Depends(get_db),
-):
-    try:
-        payload = decode_access_token(token)
+) -> User:
 
-        if payload is None:
-            raise HTTPException(
-                status_code=status.HTTP_401_UNAUTHORIZED,
-                detail="Invalid token",
-            )
+    # No Authorization header / no token
+    if not token:
+        raise UnauthorizedException(
+            message="Not authenticated",
+            error_code="UNAUTHORIZED",
+        )
+
+    try:
+        payload = jwt.decode(
+            token,
+            settings.SECRET_KEY,
+            algorithms=[settings.ALGORITHM],
+        )
 
         user_id = payload.get("sub")
 
+        if not user_id:
+            raise UnauthorizedException(
+                message="Invalid authentication token",
+                error_code="INVALID_TOKEN",
+            )
+
     except JWTError:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Invalid token",
+        raise UnauthorizedException(
+            message="Invalid authentication token",
+            error_code="INVALID_TOKEN",
         )
 
-    user = get_user_by_id(
-        db,
-        user_id,
+    user = (
+        db.query(User)
+        .filter(User.id == user_id)
+        .first()
     )
 
-    if user is None:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="User not found",
+    if not user:
+        raise UnauthorizedException(
+            message="User not found",
+            error_code="USER_NOT_FOUND",
+        )
+
+    if not user.is_active:
+        raise UnauthorizedException(
+            message="User account is inactive",
+            error_code="INACTIVE_ACCOUNT",
         )
 
     return user
