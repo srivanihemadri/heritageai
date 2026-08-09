@@ -3,6 +3,8 @@ from sqlalchemy.orm import Session
 from app.crud.heritage_site import (
     create_heritage_site,
     delete_heritage_site,
+    activate_heritage_site,
+    deactivate_heritage_site,
     get_heritage_site_or_404,
     search_heritage_sites,
     update_heritage_site,
@@ -99,6 +101,35 @@ def verify_site(
     )
 
     return verify_heritage_site(
+        db,
+        site,
+    )
+
+def activate_site(
+    db: Session,
+    site_id: str,
+) -> HeritageSite:
+    site = get_heritage_site_or_404(
+        db,
+        site_id,
+    )
+
+    return activate_heritage_site(
+        db,
+        site,
+    )
+
+
+def deactivate_site(
+    db: Session,
+    site_id: str,
+) -> HeritageSite:
+    site = get_heritage_site_or_404(
+        db,
+        site_id,
+    )
+
+    return deactivate_heritage_site(
         db,
         site,
     )

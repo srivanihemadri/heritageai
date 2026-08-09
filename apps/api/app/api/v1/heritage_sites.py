@@ -14,7 +14,9 @@ from app.schemas.heritage_site import (
     HeritageSiteUpdate,
 )
 from app.services.heritage_site import (
+    activate_site,
     create_site,
+    deactivate_site,
     delete_site,
     get_site,
     list_active_sites,
@@ -190,4 +192,45 @@ def verify_heritage_site_endpoint(
         success=True,
         data=site,
         message="Heritage site verified successfully",
+    )
+
+@router.post(
+    "/{site_id}/activate",
+    response_model=APIResponse[HeritageSiteResponse],
+)
+def activate_heritage_site(
+    site_id: str,
+    current_admin: User = Depends(get_current_admin),
+    db: Session = Depends(get_db),
+):
+    site = activate_site(
+        db,
+        site_id,
+    )
+
+    return APIResponse(
+        success=True,
+        data=site,
+        message="Heritage site activated successfully",
+    )
+
+
+@router.post(
+    "/{site_id}/deactivate",
+    response_model=APIResponse[HeritageSiteResponse],
+)
+def deactivate_heritage_site(
+    site_id: str,
+    current_admin: User = Depends(get_current_admin),
+    db: Session = Depends(get_db),
+):
+    site = deactivate_site(
+        db,
+        site_id,
+    )
+
+    return APIResponse(
+        success=True,
+        data=site,
+        message="Heritage site deactivated successfully",
     )

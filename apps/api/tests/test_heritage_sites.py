@@ -311,3 +311,156 @@ def test_admin_can_verify_heritage_site():
     assert response.json()["data"]["id"] == "site-1"
     assert response.json()["data"]["is_verified"] is True
     assert response.json()["message"] == "Heritage site verified successfully"
+
+def test_normal_user_cannot_activate_heritage_site():
+    def deny_admin():
+        raise ForbiddenException(
+            message="Administrator access required",
+            error_code="ADMIN_ACCESS_REQUIRED",
+        )
+
+    app.dependency_overrides[get_current_admin] = deny_admin
+
+    try:
+        response = client.post(
+            "/api/v1/heritage-sites/site-1/activate",
+        )
+    finally:
+        app.dependency_overrides.clear()
+
+    assert response.status_code == 403
+    assert response.json()["error"]["code"] == "ADMIN_ACCESS_REQUIRED"
+
+
+def test_admin_can_activate_heritage_site():
+    admin = SimpleNamespace(
+        id="admin-1",
+        full_name="Admin User",
+        email="admin@example.com",
+        role=UserRole.ADMIN,
+        is_active=True,
+    )
+
+    class FakeDB:
+        pass
+
+    def fake_activate_site(db, site_id):
+        return SimpleNamespace(
+            id=site_id,
+            name="Test Heritage Site",
+            slug="test-heritage-site",
+            short_description=None,
+            description=None,
+            category="Monument",
+            country="India",
+            state=None,
+            city=None,
+            latitude=None,
+            longitude=None,
+            established_year=None,
+            architectural_style=None,
+            historical_period=None,
+            significance=None,
+            preservation_status=None,
+            is_verified=True,
+            is_active=True,
+        )
+
+    from app.api.v1 import heritage_sites
+
+    app.dependency_overrides[get_current_admin] = lambda: admin
+    app.dependency_overrides[get_db] = lambda: FakeDB()
+
+    original_activate_site = heritage_sites.activate_site
+    heritage_sites.activate_site = fake_activate_site
+
+    try:
+        response = client.post(
+            "/api/v1/heritage-sites/site-1/activate",
+        )
+    finally:
+        heritage_sites.activate_site = original_activate_site
+        app.dependency_overrides.clear()
+
+    assert response.status_code == 200
+    assert response.json()["success"] is True
+    assert response.json()["data"]["id"] == "site-1"
+    assert response.json()["data"]["is_active"] is True
+    assert response.json()["message"] == "Heritage site activated successfully"
+
+
+def test_normal_user_cannot_deactivate_heritage_site():
+    def deny_admin():
+        raise ForbiddenException(
+            message="Administrator access required",
+            error_code="ADMIN_ACCESS_REQUIRED",
+        )
+
+    app.dependency_overrides[get_current_admin] = deny_admin
+
+    try:
+        response = client.post(
+            "/api/v1/heritage-sites/site-1/deactivate",
+        )
+    finally:
+        app.dependency_overrides.clear()
+
+    assert response.status_code == 403
+    assert response.json()["error"]["code"] == "ADMIN_ACCESS_REQUIRED"
+
+
+def test_admin_can_deactivate_heritage_site():
+    admin = SimpleNamespace(
+        id="admin-1",
+        full_name="Admin User",
+        email="admin@example.com",
+        role=UserRole.ADMIN,
+        is_active=True,
+    )
+
+    class FakeDB:
+        pass
+
+    def fake_deactivate_site(db, site_id):
+        return SimpleNamespace(
+            id=site_id,
+            name="Test Heritage Site",
+            slug="test-heritage-site",
+            short_description=None,
+            description=None,
+            category="Monument",
+            country="India",
+            state=None,
+            city=None,
+            latitude=None,
+            longitude=None,
+            established_year=None,
+            architectural_style=None,
+            historical_period=None,
+            significance=None,
+            preservation_status=None,
+            is_verified=True,
+            is_active=False,
+        )
+
+    from app.api.v1 import heritage_sites
+
+    app.dependency_overrides[get_current_admin] = lambda: admin
+    app.dependency_overrides[get_db] = lambda: FakeDB()
+
+    original_deactivate_site = heritage_sites.deactivate_site
+    heritage_sites.deactivate_site = fake_deactivate_site
+
+    try:
+        response = client.post(
+            "/api/v1/heritage-sites/site-1/deactivate",
+        )
+    finally:
+        heritage_sites.deactivate_site = original_deactivate_site
+        app.dependency_overrides.clear()
+
+    assert response.status_code == 200
+    assert response.json()["success"] is True
+    assert response.json()["data"]["id"] == "site-1"
+    assert response.json()["data"]["is_active"] is False
+    assert response.json()["message"] == "Heritage site deactivated successfully"

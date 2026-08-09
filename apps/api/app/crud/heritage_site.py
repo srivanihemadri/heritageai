@@ -189,3 +189,26 @@ def verify_heritage_site(
     db.refresh(site)
 
     return site
+
+def activate_heritage_site(
+    db: Session,
+    site: HeritageSite,
+) -> HeritageSite:
+    site.is_active = True
+
+    db.commit()
+    db.refresh(site)
+
+    return site
+
+
+def deactivate_heritage_site(
+    db: Session,
+    site: HeritageSite,
+) -> HeritageSite:
+    site.is_active = False
+
+    db.commit()
+    db.refresh(site)
+
+    return site
