@@ -8,6 +8,7 @@ from app.api.v1.heritage_site_media import router as heritage_site_media_router
 from app.api.v1.heritage_site_metadata import router as heritage_site_metadata_router
 from app.api.v1.heritage_site_source import router as heritage_site_source_router
 from app.api.v1.heritage_site_relation import router as heritage_site_relation_router
+from app.api.v1.heritage_site_historical_event import router as heritage_site_historical_event_router
 from app.api.v1.users import router as users_router
 from app.core.exceptions import (
     HeritageAIException,
@@ -75,6 +76,11 @@ app.include_router(
 
 app.include_router(
     heritage_site_relation_router,
+    prefix="/api/v1",
+)
+
+app.include_router(
+    heritage_site_historical_event_router,
     prefix="/api/v1",
 )
 

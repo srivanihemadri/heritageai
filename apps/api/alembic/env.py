@@ -12,6 +12,7 @@ from app.models.heritage_site_metadata import HeritageSiteMetadata  # noqa: F401
 from app.models.heritage_site_media import HeritageSiteMedia  # noqa: F401
 from app.models.heritage_site_source import HeritageSiteSource  # noqa: F401
 from app.models.heritage_site_relation import HeritageSiteRelation  # noqa: F401
+from app.models.heritage_site_historical_event import HeritageSiteHistoricalEvent  # noqa: F401
 
 config = context.config
 
