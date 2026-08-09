@@ -8,6 +8,7 @@ from app.db.base import Base
 
 from app.models.user import User  # noqa: F401
 from app.models.heritage_site import HeritageSite  # noqa: F401
+from app.models.heritage_site_metadata import HeritageSiteMetadata  # noqa: F401
 from app.models.heritage_site_media import HeritageSiteMedia  # noqa: F401
 
 config = context.config
