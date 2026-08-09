@@ -6,56 +6,43 @@ class HeritageSiteCreate(BaseModel):
         min_length=2,
         max_length=200,
     )
-
     slug: str = Field(
         min_length=2,
         max_length=220,
     )
-
     short_description: str | None = Field(
         default=None,
         max_length=500,
     )
-
     description: str | None = None
-
     category: str = Field(
         min_length=2,
         max_length=100,
     )
-
     country: str = Field(
         min_length=2,
         max_length=100,
     )
-
     state: str | None = Field(
         default=None,
         max_length=100,
     )
-
     city: str | None = Field(
         default=None,
         max_length=100,
     )
-
     latitude: float | None = None
     longitude: float | None = None
-
     established_year: int | None = None
-
     architectural_style: str | None = Field(
         default=None,
         max_length=150,
     )
-
     historical_period: str | None = Field(
         default=None,
         max_length=150,
     )
-
     significance: str | None = None
-
     preservation_status: str | None = Field(
         default=None,
         max_length=100,
@@ -68,59 +55,46 @@ class HeritageSiteUpdate(BaseModel):
         min_length=2,
         max_length=200,
     )
-
     slug: str | None = Field(
         default=None,
         min_length=2,
         max_length=220,
     )
-
     short_description: str | None = Field(
         default=None,
         max_length=500,
     )
-
     description: str | None = None
-
     category: str | None = Field(
         default=None,
         min_length=2,
         max_length=100,
     )
-
     country: str | None = Field(
         default=None,
         min_length=2,
         max_length=100,
     )
-
     state: str | None = Field(
         default=None,
         max_length=100,
     )
-
     city: str | None = Field(
         default=None,
         max_length=100,
     )
-
     latitude: float | None = None
     longitude: float | None = None
-
     established_year: int | None = None
-
     architectural_style: str | None = Field(
         default=None,
         max_length=150,
     )
-
     historical_period: str | None = Field(
         default=None,
         max_length=150,
     )
-
     significance: str | None = None
-
     preservation_status: str | None = Field(
         default=None,
         max_length=100,
@@ -153,3 +127,6 @@ class HeritageSiteResponse(BaseModel):
 class HeritageSiteListResponse(BaseModel):
     sites: list[HeritageSiteResponse]
     total: int
+    page: int
+    page_size: int
+    total_pages: int

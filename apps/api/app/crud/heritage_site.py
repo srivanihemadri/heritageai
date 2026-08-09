@@ -1,8 +1,15 @@
+from sqlalchemy import func, or_
 from sqlalchemy.orm import Session
 
-from app.core.exceptions import ResourceConflictException, ResourceNotFoundException
+from app.core.exceptions import (
+    ResourceConflictException,
+    ResourceNotFoundException,
+)
 from app.models.heritage_site import HeritageSite
-from app.schemas.heritage_site import HeritageSiteCreate, HeritageSiteUpdate
+from app.schemas.heritage_site import (
+    HeritageSiteCreate,
+    HeritageSiteUpdate,
+)
 
 
 def get_heritage_site_by_id(
@@ -27,14 +34,68 @@ def get_heritage_site_by_slug(
     )
 
 
-def get_heritage_sites(
+def search_heritage_sites(
     db: Session,
-) -> list[HeritageSite]:
-    return (
-        db.query(HeritageSite)
+    *,
+    search: str | None = None,
+    category: str | None = None,
+    country: str | None = None,
+    state: str | None = None,
+    city: str | None = None,
+    page: int = 1,
+    page_size: int = 20,
+) -> tuple[list[HeritageSite], int]:
+    query = db.query(HeritageSite).filter(
+        HeritageSite.is_active.is_(True)
+    )
+
+    if search:
+        search_pattern = f"%{search}%"
+
+        query = query.filter(
+            or_(
+                HeritageSite.name.ilike(search_pattern),
+                HeritageSite.short_description.ilike(search_pattern),
+                HeritageSite.description.ilike(search_pattern),
+                HeritageSite.significance.ilike(search_pattern),
+            )
+        )
+
+    if category:
+        query = query.filter(
+            HeritageSite.category == category
+        )
+
+    if country:
+        query = query.filter(
+            HeritageSite.country == country
+        )
+
+    if state:
+        query = query.filter(
+            HeritageSite.state == state
+        )
+
+    if city:
+        query = query.filter(
+            HeritageSite.city == city
+        )
+
+    total = query.with_entities(
+        func.count(HeritageSite.id)
+    ).scalar() or 0
+
+    offset = (page - 1) * page_size
+
+    sites = (
+        query
         .order_by(HeritageSite.created_at.desc())
+        .offset(offset)
+        .limit(page_size)
         .all()
     )
+
+    return sites, total
 
 
 def create_heritage_site(

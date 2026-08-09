@@ -1,4 +1,6 @@
-from fastapi import APIRouter, Depends, status
+from math import ceil
+
+from fastapi import APIRouter, Depends, Query, status
 from sqlalchemy.orm import Session
 
 from app.db.session import get_db
@@ -30,15 +32,59 @@ router = APIRouter(
     response_model=APIResponse[HeritageSiteListResponse],
 )
 def list_heritage_sites(
+    search: str | None = Query(
+        default=None,
+        min_length=1,
+        max_length=100,
+    ),
+    category: str | None = Query(
+        default=None,
+        max_length=100,
+    ),
+    country: str | None = Query(
+        default=None,
+        max_length=100,
+    ),
+    state: str | None = Query(
+        default=None,
+        max_length=100,
+    ),
+    city: str | None = Query(
+        default=None,
+        max_length=100,
+    ),
+    page: int = Query(
+        default=1,
+        ge=1,
+    ),
+    page_size: int = Query(
+        default=20,
+        ge=1,
+        le=100,
+    ),
     db: Session = Depends(get_db),
 ):
-    sites = list_active_sites(db)
+    sites, total = list_active_sites(
+        db,
+        search=search,
+        category=category,
+        country=country,
+        state=state,
+        city=city,
+        page=page,
+        page_size=page_size,
+    )
+
+    total_pages = ceil(total / page_size) if total else 0
 
     return APIResponse(
         success=True,
         data=HeritageSiteListResponse(
             sites=sites,
-            total=len(sites),
+            total=total,
+            page=page,
+            page_size=page_size,
+            total_pages=total_pages,
         ),
         message="Heritage sites retrieved successfully",
     )

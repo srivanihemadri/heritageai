@@ -4,11 +4,14 @@ from app.crud.heritage_site import (
     create_heritage_site,
     delete_heritage_site,
     get_heritage_site_or_404,
-    get_heritage_sites,
+    search_heritage_sites,
     update_heritage_site,
 )
 from app.models.heritage_site import HeritageSite
-from app.schemas.heritage_site import HeritageSiteCreate, HeritageSiteUpdate
+from app.schemas.heritage_site import (
+    HeritageSiteCreate,
+    HeritageSiteUpdate,
+)
 
 
 def create_site(
@@ -23,26 +26,35 @@ def create_site(
 
 def list_active_sites(
     db: Session,
-) -> list[HeritageSite]:
-    sites = get_heritage_sites(db)
-
-    return [
-        site
-        for site in sites
-        if site.is_active
-    ]
+    *,
+    search: str | None = None,
+    category: str | None = None,
+    country: str | None = None,
+    state: str | None = None,
+    city: str | None = None,
+    page: int = 1,
+    page_size: int = 20,
+) -> tuple[list[HeritageSite], int]:
+    return search_heritage_sites(
+        db,
+        search=search,
+        category=category,
+        country=country,
+        state=state,
+        city=city,
+        page=page,
+        page_size=page_size,
+    )
 
 
 def get_site(
     db: Session,
     site_id: str,
 ) -> HeritageSite:
-    site = get_heritage_site_or_404(
+    return get_heritage_site_or_404(
         db,
         site_id,
     )
-
-    return site
 
 
 def update_site(

@@ -3,7 +3,7 @@ from types import SimpleNamespace
 from fastapi.testclient import TestClient
 
 from app.core.exceptions import ForbiddenException
-from app.dependencies import get_current_admin, get_current_user
+from app.dependencies import get_current_admin
 from app.db.session import get_db
 from app.main import app
 from app.models.user import UserRole
@@ -14,7 +14,22 @@ client = TestClient(app)
 
 def test_heritage_sites_list_is_public():
     class FakeQuery:
+        def filter(self, *args):
+            return self
+
+        def with_entities(self, *args):
+            return self
+
+        def scalar(self):
+            return 0
+
         def order_by(self, *args):
+            return self
+
+        def offset(self, *args):
+            return self
+
+        def limit(self, *args):
             return self
 
         def all(self):
@@ -33,7 +48,11 @@ def test_heritage_sites_list_is_public():
 
     assert response.status_code == 200
     assert response.json()["success"] is True
+    assert response.json()["data"]["sites"] == []
     assert response.json()["data"]["total"] == 0
+    assert response.json()["data"]["page"] == 1
+    assert response.json()["data"]["page_size"] == 20
+    assert response.json()["data"]["total_pages"] == 0
 
 
 def test_normal_user_cannot_create_heritage_site():
