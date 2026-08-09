@@ -6,6 +6,7 @@ from app.crud.heritage_site import (
     get_heritage_site_or_404,
     search_heritage_sites,
     update_heritage_site,
+    verify_heritage_site,
 )
 from app.models.heritage_site import HeritageSite
 from app.schemas.heritage_site import (
@@ -84,6 +85,20 @@ def delete_site(
     )
 
     delete_heritage_site(
+        db,
+        site,
+    )
+
+def verify_site(
+    db: Session,
+    site_id: str,
+) -> HeritageSite:
+    site = get_heritage_site_or_404(
+        db,
+        site_id,
+    )
+
+    return verify_heritage_site(
         db,
         site,
     )

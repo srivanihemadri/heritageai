@@ -19,6 +19,7 @@ from app.services.heritage_site import (
     get_site,
     list_active_sites,
     update_site,
+    verify_site,
 )
 
 router = APIRouter(
@@ -170,3 +171,23 @@ def delete_heritage_site(
     )
 
     return None
+
+@router.post(
+    "/{site_id}/verify",
+    response_model=APIResponse[HeritageSiteResponse],
+)
+def verify_heritage_site_endpoint(
+    site_id: str,
+    current_admin: User = Depends(get_current_admin),
+    db: Session = Depends(get_db),
+):
+    site = verify_site(
+        db,
+        site_id,
+    )
+
+    return APIResponse(
+        success=True,
+        data=site,
+        message="Heritage site verified successfully",
+    )

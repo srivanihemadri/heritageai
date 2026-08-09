@@ -178,3 +178,14 @@ def get_heritage_site_or_404(
         )
 
     return site
+
+def verify_heritage_site(
+    db: Session,
+    site: HeritageSite,
+) -> HeritageSite:
+    site.is_verified = True
+
+    db.commit()
+    db.refresh(site)
+
+    return site
