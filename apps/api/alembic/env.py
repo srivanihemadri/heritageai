@@ -8,6 +8,7 @@ from app.db.base import Base
 
 # Import all models here
 from app.models.user import User  # noqa: F401
+from app.models.heritage_site import HeritageSite  # noqa: F401
 
 config = context.config
 
