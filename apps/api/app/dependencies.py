@@ -4,9 +4,9 @@ from jose import JWTError, jwt
 from sqlalchemy.orm import Session
 
 from app.core.config import settings
-from app.core.exceptions import UnauthorizedException
+from app.core.exceptions import ForbiddenException, UnauthorizedException
 from app.db.session import get_db
-from app.models.user import User
+from app.models.user import User, UserRole
 
 
 oauth2_scheme = OAuth2PasswordBearer(
@@ -67,3 +67,16 @@ def get_current_user(
         )
 
     return user
+
+
+def get_current_admin(
+    current_user: User = Depends(get_current_user),
+) -> User:
+
+    if current_user.role != UserRole.ADMIN:
+        raise ForbiddenException(
+            message="Administrator access required",
+            error_code="ADMIN_ACCESS_REQUIRED",
+        )
+
+    return current_user
