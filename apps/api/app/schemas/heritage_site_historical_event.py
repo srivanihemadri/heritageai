@@ -12,7 +12,9 @@ class HeritageSiteHistoricalEventCreate(BaseModel):
     )
     description: str | None = None
     event_date: date | None = None
+    date_label: str | None = None
     date_precision: DatePrecision = DatePrecision.UNKNOWN
+    display_order: int = Field(default=0, ge=0)
     significance: str | None = None
 
 
@@ -24,7 +26,9 @@ class HeritageSiteHistoricalEventUpdate(BaseModel):
     )
     description: str | None = None
     event_date: date | None = None
+    date_label: str | None = None
     date_precision: DatePrecision | None = None
+    display_order: int | None = Field(default=None, ge=0)
     significance: str | None = None
 
 
@@ -34,6 +38,7 @@ class HeritageSiteHistoricalEventResponse(BaseModel):
     title: str
     description: str | None
     event_date: date | None
+    date_label: str | None
     date_precision: DatePrecision
     significance: str | None
     display_order: int

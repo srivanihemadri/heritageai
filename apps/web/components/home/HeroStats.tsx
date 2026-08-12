@@ -27,21 +27,33 @@ export default function HeroStats() {
       initial={{ opacity: 0, y: 25 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 0.8 }}
-      className="mt-16 grid w-full max-w-5xl grid-cols-2 gap-5 md:grid-cols-4"
+      className="mt-16 grid w-full max-w-5xl grid-cols-2 gap-4 md:grid-cols-4 md:gap-5"
     >
-      {stats.map((item) => (
-        <div
+      {stats.map((item, index) => (
+        <motion.div
           key={item.label}
-          className="rounded-2xl border border-white/10 bg-white/5 p-6 text-center backdrop-blur-xl transition-all duration-300 hover:border-cyan-400 hover:bg-white/10"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{
+            delay: 0.9 + index * 0.1,
+            duration: 0.5,
+          }}
+          whileHover={{
+            y: -5,
+            scale: 1.01,
+          }}
+          className="heritage-glass group rounded-[var(--radius-card)] border border-[var(--glass-border)] p-5 text-center transition-all duration-300 hover:border-[var(--glass-border-strong)] hover:bg-white/[0.06] md:p-6"
         >
-          <h3 className="text-3xl font-bold text-cyan-400">
+          <p className="heritage-gold-gradient text-2xl font-bold tracking-tight md:text-3xl">
             {item.value}
-          </h3>
+          </p>
 
-          <p className="mt-2 text-sm text-gray-400">
+          <p className="mt-2 text-xs font-medium tracking-wide text-[var(--heritage-muted)] md:text-sm">
             {item.label}
           </p>
-        </div>
+
+          <div className="mx-auto mt-4 h-px w-10 bg-[var(--heritage-gold)]/30 transition-all duration-300 group-hover:w-16 group-hover:bg-[var(--heritage-gold)]/60" />
+        </motion.div>
       ))}
     </motion.div>
   );

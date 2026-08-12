@@ -4,45 +4,69 @@ import { motion } from "framer-motion";
 
 export default function HeroBackground() {
   return (
-    <div className="absolute inset-0 overflow-hidden">
-
-      {/* Main Glow */}
+    <>
+      {/* Central warm heritage atmosphere */}
       <motion.div
+        aria-hidden="true"
         animate={{
-          scale: [1, 1.2, 1],
-          opacity: [0.25, 0.45, 0.25],
+          scale: [1, 1.08, 1],
+          opacity: [0.12, 0.2, 0.12],
         }}
         transition={{
-          duration: 8,
+          duration: 14,
           repeat: Infinity,
+          ease: "easeInOut",
         }}
-        className="absolute left-1/2 top-20 h-[600px] w-[600px] -translate-x-1/2 rounded-full bg-cyan-500 blur-[180px]"
+        className="pointer-events-none absolute left-1/2 top-20 h-[560px] w-[560px] -translate-x-1/2 rounded-full bg-[var(--heritage-gold)] blur-[200px]"
       />
 
-      {/* Left Glow */}
+      {/* Left bronze atmosphere */}
       <motion.div
+        aria-hidden="true"
         animate={{
-          y: [-20, 20, -20],
+          x: [-20, 20, -20],
+          opacity: [0.035, 0.075, 0.035],
         }}
         transition={{
-          duration: 6,
+          duration: 12,
           repeat: Infinity,
+          ease: "easeInOut",
         }}
-        className="absolute left-0 top-60 h-[300px] w-[300px] rounded-full bg-sky-500/20 blur-[120px]"
+        className="pointer-events-none absolute -left-32 top-72 h-[340px] w-[340px] rounded-full bg-[var(--heritage-gold-dark)] blur-[150px]"
       />
 
-      {/* Right Glow */}
+      {/* Right bronze atmosphere */}
       <motion.div
+        aria-hidden="true"
         animate={{
-          y: [20, -20, 20],
+          x: [20, -20, 20],
+          opacity: [0.03, 0.065, 0.03],
         }}
         transition={{
-          duration: 7,
+          duration: 15,
           repeat: Infinity,
+          ease: "easeInOut",
         }}
-        className="absolute right-0 top-40 h-[250px] w-[250px] rounded-full bg-blue-500/20 blur-[120px]"
+        className="pointer-events-none absolute -right-28 top-56 h-[320px] w-[320px] rounded-full bg-[var(--heritage-bronze)] blur-[150px]"
       />
 
-    </div>
+      {/* Subtle vertical light */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute left-1/2 top-0 h-[700px] w-px -translate-x-1/2 bg-gradient-to-b from-[var(--heritage-gold)]/10 via-[var(--heritage-gold)]/[0.03] to-transparent"
+      />
+
+      {/* Cinematic vignette */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,rgba(11,9,7,0.16)_48%,rgba(11,9,7,0.78)_100%)]"
+      />
+
+      {/* Bottom fade into the next section */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-[var(--heritage-black)] to-transparent"
+      />
+    </>
   );
 }

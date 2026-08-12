@@ -30,7 +30,7 @@ const cards = [
 
 export default function HeroFeatureCards() {
   return (
-    <div className="mt-16 grid gap-6 md:grid-cols-3">
+    <div className="mt-16 grid w-full max-w-6xl gap-5 md:grid-cols-3">
       {cards.map((card, index) => {
         const Icon = card.icon;
 
@@ -47,15 +47,20 @@ export default function HeroFeatureCards() {
               y: -8,
               scale: 1.02,
             }}
-            className="rounded-3xl border border-white/10 bg-white/5 p-8 backdrop-blur-xl transition-all duration-300 hover:border-cyan-400/40"
+            className="heritage-glass group rounded-[var(--radius-card)] p-7 transition-all duration-300 hover:border-[var(--glass-border-strong)] hover:shadow-[0_20px_60px_rgba(212,175,90,0.10)]"
           >
-            <Icon className="mb-5 h-10 w-10 text-cyan-400" />
+            <div className="mb-6 flex h-12 w-12 items-center justify-center rounded-xl border border-[var(--glass-border)] bg-[var(--glass-highlight)]">
+              <Icon
+                className="h-6 w-6 text-[var(--heritage-gold)] transition-transform duration-300 group-hover:scale-110"
+                strokeWidth={1.7}
+              />
+            </div>
 
-            <h3 className="mb-3 text-xl font-semibold">
+            <h3 className="mb-3 text-xl font-semibold text-[var(--heritage-ivory)]">
               {card.title}
             </h3>
 
-            <p className="leading-7 text-gray-400">
+            <p className="leading-7 text-[var(--heritage-muted)]">
               {card.description}
             </p>
           </motion.div>

@@ -48,6 +48,11 @@ class HeritageSiteHistoricalEvent(Base):
         nullable=True,
     )
 
+    date_label: Mapped[str | None] = mapped_column(
+        String(100),
+        nullable=True,
+    )
+
     date_precision: Mapped[DatePrecision] = mapped_column(
         SqlEnum(DatePrecision),
         nullable=False,

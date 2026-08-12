@@ -18,6 +18,10 @@ class Settings(BaseSettings):
     ALGORITHM: str
     ACCESS_TOKEN_EXPIRE_MINUTES: int
 
+    MEDIA_STORAGE_TYPE: str
+    MEDIA_STORAGE_PATH: str
+    MEDIA_BASE_URL: str
+
     model_config = SettingsConfigDict(
         env_file=".env",
         case_sensitive=True,

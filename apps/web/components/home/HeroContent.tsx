@@ -9,11 +9,10 @@ export default function HeroContent() {
         initial={{ opacity: 0, y: 40 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8 }}
-        className="mx-auto max-w-6xl text-center text-5xl font-black leading-tight tracking-tight md:text-7xl xl:text-8xl"
+        className="mx-auto max-w-6xl text-center text-5xl font-black leading-[0.95] tracking-[-0.04em] text-[var(--heritage-ivory)] md:text-7xl xl:text-8xl"
       >
         Preserve The Worlds
-        <br />
-        <span className="bg-gradient-to-r from-cyan-400 via-sky-400 to-blue-500 bg-clip-text text-transparent">
+        <span className="mt-3 block heritage-gold-gradient">
           Cultural Heritage
         </span>
       </motion.h1>
@@ -22,7 +21,7 @@ export default function HeroContent() {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.3 }}
-        className="mx-auto mt-8 max-w-3xl text-center text-lg leading-8 text-gray-400 md:text-xl"
+        className="mx-auto mt-8 max-w-3xl text-center text-base leading-8 text-[var(--heritage-muted)] md:text-lg"
       >
         Discover historical monuments, restore ancient artifacts, detect
         structural damage, translate inscriptions, and explore world heritage
