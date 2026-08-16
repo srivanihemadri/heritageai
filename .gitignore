@@ -57,3 +57,19 @@ apps/api/storage/media/
 *-recovery*
 *.backup
 *.recovery
+
+# Mobile dependencies and generated Expo artifacts
+apps/mobile/node_modules/
+apps/mobile/.expo/
+apps/mobile/dist/
+apps/mobile/web-build/
+apps/mobile/android/.gradle/
+apps/mobile/android/build/
+apps/mobile/ios/Pods/
+apps/mobile/*.tsbuildinfo
+
+# HeritageAI local vector database/runtime data
+apps/data/vector/qdrant/
+data/vector/qdrant/
+**/__pycache__/
+*.pyc
