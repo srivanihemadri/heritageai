@@ -42,3 +42,18 @@ __pycache__/
 *.py[cod]
 .venv/
 *.egg-info/
+
+# HeritageAI development/runtime exclusions
+*.backup
+*.step-*
+*.recovery
+apps/api/storage/media/
+*.wav
+
+# HeritageAI development/runtime exclusions
+
+# HeritageAI task backup/recovery artifacts
+*-backup
+*-recovery*
+*.backup
+*.recovery

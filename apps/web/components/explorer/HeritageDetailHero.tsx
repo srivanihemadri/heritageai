@@ -172,7 +172,7 @@ function openViewer() {
                   type="button"
                   onClick={openViewer}
                   aria-label={`Open ${site.name} image in fullscreen viewer`}
-                  className="group relative aspect-[4/3] w-full max-w-[420px] overflow-hidden rounded-2xl border border-[var(--heritage-gold-dark)]/50 bg-black/20 text-left shadow-[0_0_35px_rgba(212,175,55,0.12)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--heritage-gold)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--heritage-bg)]"
+                  className="group relative aspect-[4/3] w-full max-w-[420px] overflow-hidden rounded-2xl border border-[var(--heritage-gold-dark)]/50 bg-black/20 text-left shadow-[0_0_35px_rgba(212,175,55,0.12)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--heritage-gold)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--heritage-black)]"
                 >
                   <Image
                     src={selectedImage.url}
@@ -226,7 +226,7 @@ function openViewer() {
                             aria-label={`View ${image.title ?? site.name} image`}
                             aria-pressed={isSelected}
                             className={[
-                              "relative h-16 w-20 shrink-0 overflow-hidden rounded-xl border transition-all duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--heritage-gold)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--heritage-bg)]",
+                              "relative h-16 w-20 shrink-0 overflow-hidden rounded-xl border transition-all duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--heritage-gold)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--heritage-black)]",
                               isSelected
                                 ? "border-[var(--heritage-gold)] opacity-100 shadow-[0_0_18px_rgba(212,175,55,0.16)]"
                                 : "border-[var(--glass-border)] opacity-55 hover:border-[var(--glass-border-strong)] hover:opacity-100",

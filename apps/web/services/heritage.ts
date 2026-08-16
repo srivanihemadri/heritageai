@@ -57,6 +57,43 @@ interface HeritageSiteHistoricalEventApiResponse {
 }
 
 
+export type HeritageSiteSourceType =
+  | "GOVERNMENT"
+  | "UNESCO"
+  | "ACADEMIC"
+  | "BOOK"
+  | "MUSEUM"
+  | "ARCHIVE"
+  | "WEBSITE"
+  | "OTHER";
+
+export interface HeritageSiteSource {
+  id: string;
+  site_id: string;
+  source_type: HeritageSiteSourceType;
+  title: string;
+  author: string | null;
+  organization: string | null;
+  publisher: string | null;
+  publication_date: string | null;
+  url: string | null;
+  citation_text: string | null;
+  language: string;
+  display_order: number;
+  is_verified: boolean;
+  is_active: boolean;
+}
+
+export interface HeritageSiteSourceListResponse {
+  sources: HeritageSiteSource[];
+  total: number;
+}
+
+interface HeritageSiteSourceApiResponse {
+  success: boolean;
+  data: HeritageSiteSourceListResponse;
+  message: string;
+}
 export type HeritageRelationType =
   | "RELATED_TO"
   | "PART_OF"
@@ -233,6 +270,36 @@ export async function getHeritageSite(
   return payload.data;
 }
 
+export async function getHeritageSiteSources(
+  siteId: string,
+): Promise<HeritageSiteSourceListResponse> {
+  const response = await fetch(
+    `${API_BASE_URL}/heritage-sites/${encodeURIComponent(siteId)}/sources`,
+    {
+      headers: {
+        Accept: "application/json",
+      },
+      cache: "no-store",
+    },
+  );
+
+  if (!response.ok) {
+    throw new Error(
+      `Failed to fetch heritage site sources: ${response.status}`,
+    );
+  }
+
+  const payload =
+    (await response.json()) as HeritageSiteSourceApiResponse;
+
+  if (!payload.success) {
+    throw new Error(
+      payload.message || "Failed to fetch heritage site sources",
+    );
+  }
+
+  return payload.data;
+}
 export async function getHeritageSiteRelations(
   siteId: string,
 ): Promise<HeritageSiteRelationListResponse> {

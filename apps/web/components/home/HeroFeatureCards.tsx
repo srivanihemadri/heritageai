@@ -1,67 +1,64 @@
-"use client";
+﻿"use client";
 
-import { motion } from "framer-motion";
-import {
-  Globe2,
-  Sparkles,
-  ShieldCheck,
-} from "lucide-react";
+import { motion, useReducedMotion } from "framer-motion";
+import { Camera, Compass, Sparkles } from "lucide-react";
 
-const cards = [
+const features = [
   {
-    title: "Explore Heritage",
-    description:
-      "Discover UNESCO World Heritage Sites, monuments and historical landmarks.",
-    icon: Globe2,
+    icon: Compass,
+    title: "Explore",
+    description: "Discover remarkable heritage places and stories.",
   },
   {
-    title: "AI Restoration",
-    description:
-      "Restore damaged photographs and historical artifacts using advanced AI.",
+    icon: Camera,
+    title: "Identify",
+    description: "Use visual intelligence to understand what you see.",
+  },
+  {
     icon: Sparkles,
-  },
-  {
-    title: "Damage Detection",
-    description:
-      "Identify cracks, erosion and vegetation using Computer Vision.",
-    icon: ShieldCheck,
+    title: "Ask",
+    description: "Get answers grounded in HeritageAI knowledge.",
   },
 ];
 
 export default function HeroFeatureCards() {
+  const reduceMotion = useReducedMotion();
+
   return (
-    <div className="mt-16 grid w-full max-w-6xl gap-5 md:grid-cols-3">
-      {cards.map((card, index) => {
-        const Icon = card.icon;
+    <div className="grid gap-3 sm:grid-cols-3">
+      {features.map((feature, index) => {
+        const Icon = feature.icon;
 
         return (
           <motion.div
-            key={card.title}
-            initial={{ opacity: 0, y: 25 }}
-            animate={{ opacity: 1, y: 0 }}
+            key={feature.title}
+            initial={{
+              opacity: 0,
+              y: reduceMotion ? 0 : 14,
+            }}
+            animate={{
+              opacity: 1,
+              y: 0,
+            }}
             transition={{
-              delay: index * 0.2,
-              duration: 0.6,
+              duration: reduceMotion ? 0 : 0.5,
+              delay: reduceMotion ? 0 : 0.15 + index * 0.08,
             }}
-            whileHover={{
-              y: -8,
-              scale: 1.02,
-            }}
-            className="heritage-glass group rounded-[var(--radius-card)] p-7 transition-all duration-300 hover:border-[var(--glass-border-strong)] hover:shadow-[0_20px_60px_rgba(212,175,90,0.10)]"
+            className="heritage-glass rounded-2xl p-4"
           >
-            <div className="mb-6 flex h-12 w-12 items-center justify-center rounded-xl border border-[var(--glass-border)] bg-[var(--glass-highlight)]">
+            <div className="flex h-9 w-9 items-center justify-center rounded-xl border border-[var(--glass-border)] bg-[rgba(212,175,90,0.07)]">
               <Icon
-                className="h-6 w-6 text-[var(--heritage-gold)] transition-transform duration-300 group-hover:scale-110"
-                strokeWidth={1.7}
+                className="h-4 w-4 text-[var(--heritage-gold-light)]"
+                aria-hidden="true"
               />
             </div>
 
-            <h3 className="mb-3 text-xl font-semibold text-[var(--heritage-ivory)]">
-              {card.title}
+            <h3 className="mt-3 text-sm font-semibold text-[var(--heritage-ivory)]">
+              {feature.title}
             </h3>
 
-            <p className="leading-7 text-[var(--heritage-muted)]">
-              {card.description}
+            <p className="mt-1 text-xs leading-5 text-[var(--heritage-muted)]">
+              {feature.description}
             </p>
           </motion.div>
         );

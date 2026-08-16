@@ -1,4 +1,4 @@
-from logging.config import fileConfig
+﻿from logging.config import fileConfig
 
 from sqlalchemy import engine_from_config, pool
 from alembic import context
@@ -13,6 +13,12 @@ from app.models.heritage_site_media import HeritageSiteMedia  # noqa: F401
 from app.models.heritage_site_source import HeritageSiteSource  # noqa: F401
 from app.models.heritage_site_relation import HeritageSiteRelation  # noqa: F401
 from app.models.heritage_site_historical_event import HeritageSiteHistoricalEvent  # noqa: F401
+from app.models.ai.knowledge_document import (  # noqa: F401
+    AIKnowledgeDocument,
+)
+from app.models.ai.knowledge_chunk import AIKnowledgeChunk  # noqa: F401
+from app.models.ai.embedding import AIEmbedding  # noqa: F401
+from app.models.scan import Scan  # noqa: F401
 
 config = context.config
 
@@ -63,3 +69,4 @@ if context.is_offline_mode():
     run_migrations_offline()
 else:
     run_migrations_online()
+

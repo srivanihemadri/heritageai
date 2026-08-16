@@ -163,7 +163,7 @@ export default function HeritageHistoricalTimeline({
                 </div>
 
                 <div className="absolute left-0 top-0 flex h-8 w-8 items-center justify-center md:static md:h-8 md:w-8">
-                  <span className="flex h-7 w-7 items-center justify-center rounded-full border border-[var(--heritage-gold-dark)]/60 bg-[var(--heritage-bg)]">
+                  <span className="flex h-7 w-7 items-center justify-center rounded-full border border-[var(--heritage-gold-dark)]/60 bg-[var(--heritage-black)]">
                     {event.is_verified ? (
                       <CheckCircle2 className="h-3.5 w-3.5 text-[var(--heritage-gold)]" />
                     ) : (

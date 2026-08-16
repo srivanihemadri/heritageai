@@ -9,13 +9,16 @@ import RelatedHeritageSites from "@/components/explorer/RelatedHeritageSites";
 import HeritageQuickFacts from "@/components/explorer/HeritageQuickFacts";
 import HeritageLocation from "@/components/explorer/HeritageLocation";
 import HeritageHistoricalTimeline from "@/components/explorer/HeritageHistoricalTimeline";
+import HeritageSources from "@/components/explorer/HeritageSources";
 
 import {
   getHeritageSite,
   getHeritageSiteMedia,
   getResolvedHeritageSiteRelations,
   getHeritageSiteHistoricalEvents,
+  getHeritageSiteSources,
   type HeritageSite,
+  type HeritageSiteSource,
   type HeritageSiteMedia,
   type HeritageSiteHistoricalEvent,
 } from "@/services/heritage";
@@ -38,6 +41,8 @@ export default function HeritageDetailPage({
     >>([]);
   const [historicalEvents, setHistoricalEvents] =
     useState<HeritageSiteHistoricalEvent[]>([]);
+  const [sources, setSources] =
+    useState<HeritageSiteSource[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -56,12 +61,24 @@ export default function HeritageDetailPage({
           mediaData,
           relatedSiteData,
           historicalEventData,
+          sourceData,
         ] = await Promise.all([
           getHeritageSite(siteId),
           getHeritageSiteMedia(siteId),
           getResolvedHeritageSiteRelations(siteId),
           getHeritageSiteHistoricalEvents(siteId),
+          getHeritageSiteSources(siteId),
         ]);
+
+        const activeSources = sourceData.sources
+          .filter((source) => source.is_active)
+          .sort((a, b) => {
+            if (a.is_verified !== b.is_verified) {
+              return a.is_verified ? -1 : 1;
+            }
+
+            return a.display_order - b.display_order;
+          });
 
         const activeMedia = mediaData.media
           .filter((media) => media.is_active)
@@ -84,6 +101,7 @@ export default function HeritageDetailPage({
           setHistoricalEvents(
             historicalEventData.events,
           );
+          setSources(activeSources);
         }
       } catch (err) {
         if (!cancelled) {
@@ -200,6 +218,10 @@ export default function HeritageDetailPage({
 
               <HeritageHistoricalTimeline
                 events={historicalEvents}
+              />
+
+              <HeritageSources
+                sources={sources}
               />
 
               <RelatedHeritageSites

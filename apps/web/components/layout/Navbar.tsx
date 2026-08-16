@@ -1,47 +1,155 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Menu, X } from "lucide-react";
+import { usePathname } from "next/navigation";
+import Logo from "../ui/logo/Logo";
 
 const navigation = [
   { label: "Home", href: "/" },
   { label: "Explorer", href: "/explorer" },
-  { label: "AI Chat", href: "/chat" },
+  { label: "AI Guide", href: "/chat" },
+  { label: "Scanner", href: "/scanner" },
   { label: "About", href: "/about" },
 ];
 
 export default function Navbar() {
+  const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
 
+  useEffect(() => {
+    setIsOpen(false);
+  }, [pathname]);
+
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setIsOpen(false);
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [isOpen]);
+
+  const isActive = (href: string) => {
+    if (href === "/") {
+      return pathname === "/";
+    }
+
+    return pathname === href || pathname.startsWith(`${href}/`);
+  };
+
   return (
-    <header className="sticky top-0 z-50 w-full px-4 pt-4 sm:px-6">
-      <nav className="heritage-nav-glass mx-auto flex max-w-7xl items-center justify-between rounded-[24px] px-4 py-3 sm:px-6">
-        <Link href="/" onClick={() => setIsOpen(false)} className="shrink-0 text-xl font-semibold tracking-tight text-[var(--heritage-ivory)]">Heritage<span className="text-[var(--heritage-gold)]">AI</span></Link>
+    <header className="sticky top-0 z-50 w-full px-3 pt-3 sm:px-5 sm:pt-5">
+      <nav
+        className="heritage-nav-glass mx-auto flex max-w-7xl items-center justify-between rounded-[var(--radius-glass)] px-3 py-2.5 sm:px-4"
+        aria-label="Primary navigation"
+      >
+        <Logo />
+
         <div className="hidden items-center gap-1 md:flex">
-          {navigation.map((item) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              className="rounded-xl px-4 py-2 text-sm font-medium text-[var(--heritage-muted)] transition-colors hover:bg-white/5 hover:text-[var(--heritage-ivory)]">{item.label}</Link>
-          ))}
+          {navigation.map((item) => {
+            const active = isActive(item.href);
+
+            return (
+              <Link
+                key={item.href}
+                href={item.href}
+                aria-current={active ? "page" : undefined}
+                className={`relative rounded-xl px-4 py-2.5 text-sm font-medium transition-all duration-200 ${
+                  active
+                    ? "bg-[rgba(212,175,90,0.10)] text-[var(--heritage-gold-light)]"
+                    : "text-[var(--heritage-muted)] hover:bg-white/[0.04] hover:text-[var(--heritage-ivory)]"
+                }`}
+              >
+                {item.label}
+
+                {active && (
+                  <span className="absolute inset-x-4 -bottom-px h-px bg-gradient-to-r from-transparent via-[var(--heritage-gold)] to-transparent" />
+                )}
+              </Link>
+            );
+          })}
         </div>
+
         <div className="hidden items-center gap-2 md:flex">
-          <Link href="/login" className="rounded-xl border border-[var(--glass-border)] px-4 py-2 text-sm font-medium text-[var(--heritage-ivory)] transition-all hover:border-[var(--glass-border-strong)] hover:bg-white/5">Login</Link>
-          <Link href="/login" className="heritage-gold-glow rounded-xl border border-[var(--heritage-gold)]/50 bg-[var(--heritage-gold)] px-5 py-2 text-sm font-semibold text-[var(--heritage-black)] transition-all hover:bg-[var(--heritage-gold-light)]">Get Started</Link>
+          <Link
+            href="/login"
+            className="heritage-button heritage-button-glass min-h-10 px-4 text-sm"
+          >
+            Login
+          </Link>
+
+          <Link
+            href="/login"
+            className="heritage-button heritage-button-gold heritage-gold-glow min-h-10 px-5 text-sm"
+          >
+            Get Started
+          </Link>
         </div>
-        <button type="button" aria-label={isOpen ? "Close navigation menu" : "Open navigation menu"} aria-expanded={isOpen} onClick={() => setIsOpen((open) => !open)} className="rounded-xl border border-[var(--glass-border)] p-2 text-[var(--heritage-ivory)] transition-colors hover:bg-white/5 md:hidden">{isOpen ? <X size={22} /> : <Menu size={22} />}</button>
+
+        <button
+          type="button"
+          aria-label={isOpen ? "Close navigation menu" : "Open navigation menu"}
+          aria-expanded={isOpen}
+          onClick={() => setIsOpen((open) => !open)}
+          className="flex h-10 w-10 items-center justify-center rounded-xl border border-[var(--glass-border)] bg-white/[0.02] text-[var(--heritage-ivory)] transition-all hover:border-[var(--glass-border-hover)] hover:bg-white/[0.05] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--heritage-gold)] md:hidden"
+        >
+          {isOpen ? (
+            <X size={20} strokeWidth={1.8} />
+          ) : (
+            <Menu size={20} strokeWidth={1.8} />
+          )}
+        </button>
       </nav>
+
       {isOpen && (
-        <div className="heritage-glass mx-auto mt-2 max-w-7xl rounded-[24px] p-3 md:hidden">
-          <div className="flex flex-col gap-1">
-            {navigation.map((item) => (
-              <Link key={item.href} href={item.href} onClick={() => setIsOpen(false)} className="rounded-xl px-4 py-3 text-sm font-medium text-[var(--heritage-muted)] transition-colors hover:bg-white/5 hover:text-[var(--heritage-ivory)]">{item.label}</Link>
-            ))}
+        <div className="heritage-glass mx-auto mt-2 max-w-7xl overflow-hidden rounded-[var(--radius-glass)] md:hidden">
+          <div className="p-2">
+            {navigation.map((item) => {
+              const active = isActive(item.href);
+
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className={`flex items-center justify-between rounded-xl px-4 py-3.5 text-sm font-medium transition-all ${
+                    active
+                      ? "bg-[rgba(212,175,90,0.10)] text-[var(--heritage-gold-light)]"
+                      : "text-[var(--heritage-muted)] hover:bg-white/[0.04] hover:text-[var(--heritage-ivory)]"
+                  }`}
+                >
+                  <span>{item.label}</span>
+
+                  {active && (
+                    <span className="h-1.5 w-1.5 rounded-full bg-[var(--heritage-gold)] shadow-[0_0_12px_rgba(212,175,90,0.55)]" />
+                  )}
+                </Link>
+              );
+            })}
           </div>
-          <div className="mt-2 grid grid-cols-2 gap-2 border-t border-[var(--glass-border)] pt-3">
-            <Link href="/login" onClick={() => setIsOpen(false)} className="rounded-xl border border-[var(--glass-border)] px-4 py-3 text-center text-sm font-medium text-[var(--heritage-ivory)]">Login</Link>
-            <Link href="/login" onClick={() => setIsOpen(false)} className="rounded-xl bg-[var(--heritage-gold)] px-4 py-3 text-center text-sm font-semibold text-[var(--heritage-black)]">Get Started</Link>
+
+          <div className="grid grid-cols-2 gap-2 border-t border-[var(--glass-border)] p-3">
+            <Link
+              href="/login"
+              className="heritage-button heritage-button-glass min-h-11 text-sm"
+            >
+              Login
+            </Link>
+
+            <Link
+              href="/login"
+              className="heritage-button heritage-button-gold min-h-11 text-sm"
+            >
+              Get Started
+            </Link>
           </div>
         </div>
       )}

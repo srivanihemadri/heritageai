@@ -1,5 +1,6 @@
-import Link from "next/link";
+﻿import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
+import Logo from "../ui/logo/Logo";
 
 const footerLinks = [
   { label: "Home", href: "/" },
@@ -10,22 +11,23 @@ const footerLinks = [
 
 export default function Footer() {
   return (
-    <footer className="border-t border-[var(--glass-border)]">
-      <div className="mx-auto max-w-7xl px-6 py-16 md:px-8">
-        <div className="grid gap-10 md:grid-cols-[1.3fr_1fr_1fr]">
-          <div>
-            <Link
-              href="/"
-              className="text-xl font-semibold tracking-tight text-[var(--heritage-ivory)]"
-            >
-              Heritage
-              <span className="text-[var(--heritage-gold)]">AI</span>
-            </Link>
+    <footer className="relative mt-12 overflow-hidden border-t border-[var(--glass-border)]">
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(212,175,90,0.07),transparent_40%)]" />
 
-            <p className="mt-4 max-w-md text-sm leading-7 text-[var(--heritage-muted)]">
+      <div className="heritage-container relative py-16 sm:py-20">
+        <div className="grid gap-12 lg:grid-cols-[1.4fr_0.8fr_0.8fr]">
+          <div>
+            <Logo />
+
+            <p className="mt-5 max-w-md text-sm leading-7 text-[var(--heritage-muted)]">
               An AI-powered heritage experience designed to help people
               discover, understand and preserve cultural history.
             </p>
+
+            <div className="heritage-badge mt-6">
+              <span className="h-1.5 w-1.5 rounded-full bg-[var(--heritage-gold)] shadow-[0_0_10px_rgba(212,175,90,0.7)]" />
+              Cultural intelligence platform
+            </div>
           </div>
 
           <div>
@@ -33,7 +35,7 @@ export default function Footer() {
               Explore
             </p>
 
-            <div className="mt-4 flex flex-col gap-3">
+            <div className="mt-5 flex flex-col gap-3">
               {footerLinks.map((link) => (
                 <Link
                   key={link.href}
@@ -48,10 +50,10 @@ export default function Footer() {
 
           <div>
             <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[var(--heritage-gold-light)]">
-              HeritageAI
+              Intelligence
             </p>
 
-            <div className="mt-4 flex flex-col gap-3">
+            <div className="mt-5 flex flex-col gap-3">
               <a
                 href="#how-it-works"
                 className="group flex w-fit items-center gap-1 text-sm text-[var(--heritage-muted)] transition-colors hover:text-[var(--heritage-ivory)]"
@@ -84,7 +86,9 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="mt-12 flex flex-col gap-3 border-t border-[var(--glass-border)] pt-6 text-xs text-[var(--heritage-muted)] sm:flex-row sm:items-center sm:justify-between">
+        <div className="heritage-divider mt-12" />
+
+        <div className="mt-6 flex flex-col gap-3 text-xs text-[var(--heritage-muted)] sm:flex-row sm:items-center sm:justify-between">
           <p>
             © {new Date().getFullYear()} HeritageAI. Built for cultural
             preservation.

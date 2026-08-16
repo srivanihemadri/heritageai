@@ -10,7 +10,7 @@ from app.security import hash_password
 ADMIN_NAME = "HeritageAI Admin"
 ADMIN_EMAIL = os.getenv(
     "HERITAGEAI_ADMIN_EMAIL",
-    "admin@heritageai.local",
+    "admin@heritageai.dev",
 )
 
 

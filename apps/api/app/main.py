@@ -1,7 +1,8 @@
-from fastapi import FastAPI
+﻿from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 
 from app.core.config import settings
+import app.models  # noqa: F401
 from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -14,6 +15,7 @@ from app.api.v1.heritage_site_source import router as heritage_site_source_route
 from app.api.v1.heritage_site_relation import router as heritage_site_relation_router
 from app.api.v1.heritage_site_historical_event import router as heritage_site_historical_event_router
 from app.api.v1.users import router as users_router
+from app.api.v1.ai import router as ai_router
 from app.core.exceptions import (
     HeritageAIException,
     heritageai_exception_handler,
@@ -38,6 +40,8 @@ app.add_middleware(
     allow_origins=[
         "http://localhost:3000",
         "http://127.0.0.1:3000",
+        "http://localhost:8081",
+        "http://127.0.0.1:8081",
     ],
     allow_credentials=True,
     allow_methods=["*"],
@@ -104,6 +108,12 @@ app.include_router(
     prefix="/api/v1",
 )
 
+
+app.include_router(
+    ai_router,
+    prefix="/api/v1",
+)
+
 @app.get("/")
 def root():
     return {
@@ -111,3 +121,4 @@ def root():
         "version": "1.0.0",
         "status": "running",
     }
+

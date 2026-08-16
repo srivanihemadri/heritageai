@@ -1,30 +1,96 @@
-@import "tailwindcss";
+﻿@import "tailwindcss";
+
+/* ============================================================
+   HERITAGEAI — HERITAGE LIQUID GLASS DESIGN SYSTEM
+   TASK 236
+   ============================================================ */
 
 :root {
+  /* ----------------------------------------------------------
+     CORE HERITAGE PALETTE
+     ---------------------------------------------------------- */
+
   --background: #0b0907;
   --foreground: #f7f1e6;
 
   --heritage-black: #0b0907;
   --heritage-charcoal: #171411;
   --heritage-surface: #211c16;
+
   --heritage-gold: #d4af5a;
   --heritage-gold-light: #f0cf7a;
   --heritage-gold-dark: #9b7530;
+
   --heritage-ivory: #f7f1e6;
   --heritage-muted: #b8ad9c;
   --heritage-bronze: #806f57;
 
-  --glass-bg: rgba(30, 25, 19, 0.58);
-  --glass-bg-strong: rgba(30, 25, 19, 0.78);
-  --glass-border: rgba(212, 175, 90, 0.22);
-  --glass-border-strong: rgba(212, 175, 90, 0.42);
-  --glass-highlight: rgba(255, 244, 214, 0.08);
-  --glass-shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
+  /* ----------------------------------------------------------
+     LIQUID GLASS SURFACES
+     ---------------------------------------------------------- */
 
-  --radius-glass: 24px;
-  --radius-card: 18px;
+  --glass-bg: rgba(30, 25, 19, 0.58);
+  --glass-bg-hover: rgba(38, 31, 23, 0.68);
+  --glass-bg-strong: rgba(30, 25, 19, 0.78);
+  --glass-bg-solid: rgba(23, 20, 17, 0.94);
+
+  --glass-border: rgba(212, 175, 90, 0.22);
+  --glass-border-hover: rgba(212, 175, 90, 0.38);
+  --glass-border-strong: rgba(212, 175, 90, 0.42);
+
+  --glass-highlight: rgba(255, 244, 214, 0.08);
+  --glass-highlight-strong: rgba(255, 244, 214, 0.13);
+
+  /* ----------------------------------------------------------
+     GLASS EFFECTS
+     ---------------------------------------------------------- */
+
+  --glass-blur-sm: 12px;
+  --glass-blur: 24px;
+  --glass-blur-lg: 32px;
+  --glass-blur-xl: 44px;
+
+  --glass-shadow:
+    0 20px 60px rgba(0, 0, 0, 0.35);
+
+  --glass-shadow-hover:
+    0 28px 80px rgba(0, 0, 0, 0.46);
+
+  --glass-shadow-gold:
+    0 0 32px rgba(212, 175, 90, 0.16);
+
+  /* ----------------------------------------------------------
+     RADIUS SYSTEM
+     ---------------------------------------------------------- */
+
+  --radius-sm: 8px;
   --radius-button: 12px;
+  --radius-card: 18px;
+  --radius-glass: 24px;
+  --radius-xl: 32px;
+  --radius-pill: 999px;
+
+  /* ----------------------------------------------------------
+     SPACING SYSTEM
+     ---------------------------------------------------------- */
+
+  --space-section: clamp(5rem, 10vw, 9rem);
+  --content-max-width: 1280px;
+
+  /* ----------------------------------------------------------
+     MOTION SYSTEM
+     ---------------------------------------------------------- */
+
+  --motion-fast: 140ms;
+  --motion-normal: 240ms;
+  --motion-slow: 420ms;
+
+  --ease-liquid: cubic-bezier(0.22, 1, 0.36, 1);
 }
+
+/* ============================================================
+   BASE
+   ============================================================ */
 
 * {
   box-sizing: border-box;
@@ -38,6 +104,7 @@ html {
 body {
   min-height: 100vh;
   margin: 0;
+
   background:
     radial-gradient(
       circle at 50% 0%,
@@ -50,16 +117,26 @@ body {
       transparent 28%
     ),
     var(--heritage-black);
+
   color: var(--heritage-ivory);
   font-family: var(--font-geist-sans), sans-serif;
+
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
 }
+
+/* ============================================================
+   SELECTION
+   ============================================================ */
 
 ::selection {
   background: rgba(212, 175, 90, 0.32);
   color: var(--heritage-ivory);
 }
+
+/* ============================================================
+   SCROLLBAR
+   ============================================================ */
 
 ::-webkit-scrollbar {
   width: 8px;
@@ -71,57 +148,371 @@ body {
 
 ::-webkit-scrollbar-thumb {
   background: rgba(212, 175, 90, 0.35);
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
 }
 
 ::-webkit-scrollbar-thumb:hover {
   background: rgba(212, 175, 90, 0.58);
 }
 
+/* ============================================================
+   HERITAGE LIQUID GLASS
+   ============================================================ */
+
 @layer components {
+
   .heritage-glass {
+    position: relative;
+
     background: var(--glass-bg);
     border: 1px solid var(--glass-border);
     box-shadow: var(--glass-shadow);
-    backdrop-filter: blur(24px) saturate(120%);
-    -webkit-backdrop-filter: blur(24px) saturate(120%);
+
+    backdrop-filter:
+      blur(var(--glass-blur))
+      saturate(120%);
+
+    -webkit-backdrop-filter:
+      blur(var(--glass-blur))
+      saturate(120%);
+
+    transition:
+      background var(--motion-normal) var(--ease-liquid),
+      border-color var(--motion-normal) var(--ease-liquid),
+      box-shadow var(--motion-normal) var(--ease-liquid),
+      transform var(--motion-normal) var(--ease-liquid);
+  }
+
+  .heritage-glass:hover {
+    background: var(--glass-bg-hover);
+    border-color: var(--glass-border-hover);
+    box-shadow: var(--glass-shadow-hover);
   }
 
   .heritage-glass-strong {
+    position: relative;
+
     background: var(--glass-bg-strong);
     border: 1px solid var(--glass-border-strong);
     box-shadow: var(--glass-shadow);
-    backdrop-filter: blur(32px) saturate(125%);
-    -webkit-backdrop-filter: blur(32px) saturate(125%);
+
+    backdrop-filter:
+      blur(var(--glass-blur-lg))
+      saturate(125%);
+
+    -webkit-backdrop-filter:
+      blur(var(--glass-blur-lg))
+      saturate(125%);
   }
+
+  .heritage-glass-solid {
+    background: var(--glass-bg-solid);
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--glass-shadow);
+  }
+
+  /* ----------------------------------------------------------
+     LIQUID HIGHLIGHT
+     ---------------------------------------------------------- */
+
+  .heritage-glass-highlight {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .heritage-glass-highlight::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+
+    background:
+      linear-gradient(
+        135deg,
+        var(--glass-highlight),
+        transparent 42%
+      );
+
+    pointer-events: none;
+  }
+
+  /* ----------------------------------------------------------
+     GOLD
+     ---------------------------------------------------------- */
 
   .heritage-gold-text {
     color: var(--heritage-gold);
   }
 
   .heritage-gold-gradient {
-    background: linear-gradient(
-      135deg,
-      #f0cf7a 0%,
-      #d4af5a 48%,
-      #9b7530 100%
-    );
+    background:
+      linear-gradient(
+        135deg,
+        var(--heritage-gold-light) 0%,
+        var(--heritage-gold) 48%,
+        var(--heritage-gold-dark) 100%
+      );
+
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
   }
 
   .heritage-gold-glow {
-    box-shadow: 0 0 32px rgba(212, 175, 90, 0.16);
+    box-shadow: var(--glass-shadow-gold);
   }
+
+  /* ----------------------------------------------------------
+     NAVIGATION GLASS
+     ---------------------------------------------------------- */
 
   .heritage-nav-glass {
     background: rgba(23, 20, 17, 0.88);
+
     border: 1px solid rgba(212, 175, 90, 0.28);
+
     box-shadow:
       0 20px 60px rgba(0, 0, 0, 0.42),
       0 0 30px rgba(212, 175, 90, 0.04);
-    backdrop-filter: blur(28px) saturate(125%);
-    -webkit-backdrop-filter: blur(28px) saturate(125%);
+
+    backdrop-filter:
+      blur(28px)
+      saturate(125%);
+
+    -webkit-backdrop-filter:
+      blur(28px)
+      saturate(125%);
+  }
+
+  /* ----------------------------------------------------------
+     BUTTON FOUNDATION
+     ---------------------------------------------------------- */
+
+  .heritage-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+
+    min-height: 44px;
+    padding: 0.7rem 1.1rem;
+
+    border-radius: var(--radius-button);
+
+    font-weight: 600;
+    line-height: 1;
+
+    transition:
+      transform var(--motion-fast) var(--ease-liquid),
+      box-shadow var(--motion-normal) var(--ease-liquid),
+      background var(--motion-normal) var(--ease-liquid),
+      border-color var(--motion-normal) var(--ease-liquid);
+  }
+
+  .heritage-button:hover {
+    transform: translateY(-1px);
+  }
+
+  .heritage-button:active {
+    transform: translateY(0) scale(0.98);
+  }
+
+  .heritage-button:focus-visible {
+    outline: 2px solid var(--heritage-gold-light);
+    outline-offset: 3px;
+  }
+
+  /* ----------------------------------------------------------
+     GLASS BUTTON
+     ---------------------------------------------------------- */
+
+  .heritage-button-glass {
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    color: var(--heritage-ivory);
+
+    backdrop-filter: blur(var(--glass-blur-sm));
+    -webkit-backdrop-filter: blur(var(--glass-blur-sm));
+  }
+
+  .heritage-button-glass:hover {
+    background: var(--glass-bg-hover);
+    border-color: var(--glass-border-hover);
+    box-shadow: var(--glass-shadow-gold);
+  }
+
+  /* ----------------------------------------------------------
+     GOLD BUTTON
+     ---------------------------------------------------------- */
+
+  .heritage-button-gold {
+    background:
+      linear-gradient(
+        135deg,
+        var(--heritage-gold-light),
+        var(--heritage-gold)
+      );
+
+    border: 1px solid rgba(240, 207, 122, 0.6);
+    color: var(--heritage-black);
+
+    box-shadow:
+      0 10px 30px rgba(212, 175, 90, 0.18);
+  }
+
+  .heritage-button-gold:hover {
+    box-shadow:
+      0 14px 40px rgba(212, 175, 90, 0.28);
+  }
+
+  /* ----------------------------------------------------------
+     INPUT FOUNDATION
+     ---------------------------------------------------------- */
+
+  .heritage-input {
+    width: 100%;
+    min-height: 46px;
+
+    padding: 0.75rem 0.95rem;
+
+    background: rgba(23, 20, 17, 0.64);
+
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-button);
+
+    color: var(--heritage-ivory);
+
+    outline: none;
+
+    backdrop-filter: blur(var(--glass-blur-sm));
+    -webkit-backdrop-filter: blur(var(--glass-blur-sm));
+
+    transition:
+      border-color var(--motion-normal) var(--ease-liquid),
+      box-shadow var(--motion-normal) var(--ease-liquid),
+      background var(--motion-normal) var(--ease-liquid);
+  }
+
+  .heritage-input::placeholder {
+    color: var(--heritage-muted);
+  }
+
+  .heritage-input:hover {
+    border-color: var(--glass-border-hover);
+  }
+
+  .heritage-input:focus {
+    background: rgba(30, 25, 19, 0.76);
+    border-color: var(--heritage-gold);
+    box-shadow:
+      0 0 0 3px rgba(212, 175, 90, 0.12);
+  }
+
+  /* ----------------------------------------------------------
+     BADGE
+     ---------------------------------------------------------- */
+
+  .heritage-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+
+    min-height: 28px;
+    padding: 0.35rem 0.65rem;
+
+    border-radius: var(--radius-pill);
+
+    background: rgba(212, 175, 90, 0.09);
+    border: 1px solid rgba(212, 175, 90, 0.24);
+
+    color: var(--heritage-gold-light);
+
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+
+    backdrop-filter: blur(var(--glass-blur-sm));
+    -webkit-backdrop-filter: blur(var(--glass-blur-sm));
+  }
+
+  /* ----------------------------------------------------------
+     CONTAINER
+     ---------------------------------------------------------- */
+
+  .heritage-container {
+    width: min(
+      calc(100% - 2rem),
+      var(--content-max-width)
+    );
+
+    margin-inline: auto;
+  }
+
+  /* ----------------------------------------------------------
+     SECTION
+     ---------------------------------------------------------- */
+
+  .heritage-section {
+    padding-block: var(--space-section);
+  }
+
+  /* ----------------------------------------------------------
+     DIVIDER
+     ---------------------------------------------------------- */
+
+  .heritage-divider {
+    width: 100%;
+    height: 1px;
+
+    background:
+      linear-gradient(
+        90deg,
+        transparent,
+        rgba(212, 175, 90, 0.28),
+        transparent
+      );
+  }
+}
+
+/* ============================================================
+   REDUCED MOTION
+   ============================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ============================================================
+   RESPONSIVE FOUNDATION
+   ============================================================ */
+
+@media (min-width: 640px) {
+
+  .heritage-container {
+    width: min(
+      calc(100% - 3rem),
+      var(--content-max-width)
+    );
+  }
+}
+
+@media (min-width: 1024px) {
+
+  .heritage-container {
+    width: min(
+      calc(100% - 4rem),
+      var(--content-max-width)
+    );
   }
 }

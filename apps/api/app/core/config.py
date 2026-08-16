@@ -22,6 +22,17 @@ class Settings(BaseSettings):
     MEDIA_STORAGE_PATH: str
     MEDIA_BASE_URL: str
 
+    # ------------------------------------------
+    # Gemini AI
+    # ------------------------------------------
+
+    GEMINI_API_KEY: str
+
+    GEMINI_EMBEDDING_MODEL: str = "gemini-embedding-001"
+
+    GEMINI_EMBEDDING_DIMENSIONS: int = 768
+    GEMINI_GENERATION_MODEL: str = "gemini-3.5-flash"
+
     model_config = SettingsConfigDict(
         env_file=".env",
         case_sensitive=True,
@@ -29,3 +40,6 @@ class Settings(BaseSettings):
 
 
 settings = Settings()
+
+
+

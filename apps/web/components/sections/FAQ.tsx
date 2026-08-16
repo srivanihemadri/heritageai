@@ -1,108 +1,298 @@
-"use client";
+﻿"use client";
 
 import { useState } from "react";
-import { ChevronDown } from "lucide-react";
+import Link from "next/link";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+import {
+  ArrowRight,
+  ChevronDown,
+  CircleHelp,
+  MessageCircle,
+  Sparkles,
+} from "lucide-react";
 
-const questions = [
+const EASE = [0.22, 1, 0.36, 1] as const;
+
+const faqs = [
   {
     question: "What is HeritageAI?",
     answer:
-      "HeritageAI is an AI-powered platform designed to help people discover, understand and preserve cultural and historical heritage through digital tools.",
+      "HeritageAI is a heritage discovery and preservation platform that combines exploration, conversational AI and visual intelligence to help people understand cultural places and their stories.",
   },
   {
-    question: "What can HeritageAI analyze?",
+    question: "How does the AI Heritage Guide work?",
     answer:
-      "The platform is designed to work with heritage imagery, historical artifacts, inscriptions and visible structural conditions to support exploration and preservation workflows.",
+      "The guide retrieves available HeritageAI evidence, evaluates whether that evidence is relevant to the question and then generates an answer within the available grounding context. When the evidence is insufficient, the system is designed not to present unsupported information as fact.",
   },
   {
-    question: "Can HeritageAI restore historical photographs?",
+    question: "What can the Heritage Scanner do?",
     answer:
-      "HeritageAI is designed to provide AI-assisted restoration capabilities that can help enhance damaged historical photographs while keeping preservation context in mind.",
+      "The Heritage Scanner accepts a heritage image, analyzes the visual input and produces a structured heritage result. The result can include identification information, historical context, architectural details, confidence and grounding status.",
   },
   {
-    question: "Can I explore historical places?",
+    question: "Can the AI identify every heritage site?",
     answer:
-      "Yes. HeritageAI is being designed around heritage discovery, allowing users to explore monuments, landmarks, architecture and historical context through an accessible digital experience.",
+      "No. HeritageAI is designed to communicate uncertainty rather than force an identification when the available visual evidence is insufficient. An uncertain result should remain clearly marked as uncertain.",
   },
   {
-    question: "Is HeritageAI intended to replace heritage experts?",
+    question: "Where does HeritageAI get its historical knowledge?",
     answer:
-      "No. AI should support researchers, historians, conservation teams and the public rather than replace expert judgment. Heritage preservation ultimately depends on appropriate human interpretation and validation.",
+      "The AI experience is designed around available HeritageAI evidence and retrieval sources. Answers should stay within supported evidence rather than inventing historical facts or unsupported citations.",
   },
   {
-    question: "Will HeritageAI be free to use?",
+    question: "Can I explore heritage places without using AI?",
     answer:
-      "The project is being designed with the goal of making its core heritage experience accessible without unnecessary cost barriers.",
+      "Yes. HeritageAI also provides a heritage exploration experience where you can browse places and learn about their historical and cultural context without needing to ask an AI question.",
+  },
+  {
+    question: "Is HeritageAI only for historical monuments?",
+    answer:
+      "The broader goal is cultural heritage discovery. Monuments and architectural sites are an important part of the experience, while the platform can also support stories, locations, traditions and other forms of heritage knowledge.",
   },
 ];
 
 export default function FAQ() {
-  const [openIndex, setOpenIndex] = useState<number | null>(null);
+  const [openIndex, setOpenIndex] = useState<number | null>(0);
+  const reduceMotion = useReducedMotion();
 
   return (
     <section
       id="faq"
-      className="relative mx-auto w-full max-w-5xl px-6 py-24 md:px-8 md:py-32"
+      className="relative overflow-hidden py-24 sm:py-32"
     >
-      <div className="mx-auto max-w-3xl text-center">
-        <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[var(--heritage-gold-light)]">
-          Frequently Asked
-        </p>
+      <div className="pointer-events-none absolute right-0 top-1/4 h-72 w-72 rounded-full bg-[rgba(212,175,90,0.04)] blur-[110px]" />
 
-        <h2 className="mt-4 text-3xl font-semibold tracking-tight text-[var(--heritage-ivory)] md:text-5xl">
-          Questions about HeritageAI.
-        </h2>
+      <div className="heritage-container relative">
+        {/* ---------------------------------------------------------------- */}
+        {/* Heading */}
+        {/* ---------------------------------------------------------------- */}
 
-        <p className="mt-5 text-sm leading-7 text-[var(--heritage-muted)] md:text-base">
-          A quick look at the platform, its purpose and how AI fits into the
-          preservation experience.
-        </p>
-      </div>
+        <motion.div
+          initial={{
+            opacity: 0,
+            y: reduceMotion ? 0 : 20,
+          }}
+          whileInView={{
+            opacity: 1,
+            y: 0,
+          }}
+          viewport={{
+            once: true,
+            amount: 0.2,
+          }}
+          transition={{
+            duration: reduceMotion ? 0 : 0.7,
+            ease: EASE,
+          }}
+          className="mx-auto max-w-2xl text-center"
+        >
+          <div className="heritage-badge mx-auto w-fit">
+            <CircleHelp
+              className="h-3.5 w-3.5 text-[var(--heritage-gold-light)]"
+              aria-hidden="true"
+            />
+            Frequently asked
+          </div>
 
-      <div className="mt-12 space-y-3">
-        {questions.map((item, index) => {
-          const isOpen = openIndex === index;
+          <h2 className="mt-5 text-balance text-3xl font-semibold tracking-[-0.045em] text-[var(--heritage-ivory)] sm:text-4xl lg:text-5xl">
+            Questions before you
+            <span className="heritage-gold-gradient"> explore.</span>
+          </h2>
 
-          return (
-            <div
-              key={item.question}
-              className="heritage-glass overflow-hidden rounded-[var(--radius-card)] transition-colors duration-300 hover:border-[var(--glass-border-strong)]"
-            >
-              <button
-                type="button"
-                aria-expanded={isOpen}
-                onClick={() =>
-                  setOpenIndex(isOpen ? null : index)
-                }
-                className="flex w-full items-center justify-between gap-6 px-5 py-5 text-left md:px-6"
-              >
-                <span className="text-sm font-semibold text-[var(--heritage-ivory)] md:text-base">
-                  {item.question}
-                </span>
+          <p className="mx-auto mt-5 max-w-xl text-sm leading-7 text-[var(--heritage-muted)] sm:text-base">
+            Learn how HeritageAI approaches discovery, visual intelligence
+            and evidence-grounded historical knowledge.
+          </p>
+        </motion.div>
 
-                <ChevronDown
-                  className={`h-5 w-5 shrink-0 text-[var(--heritage-gold)] transition-transform duration-300 ${
-                    isOpen ? "rotate-180" : ""
+        {/* ---------------------------------------------------------------- */}
+        {/* FAQ layout */}
+        {/* ---------------------------------------------------------------- */}
+
+        <div className="mx-auto mt-12 max-w-4xl">
+          <div className="space-y-3">
+            {faqs.map((faq, index) => {
+              const isOpen = openIndex === index;
+
+              return (
+                <motion.div
+                  key={faq.question}
+                  initial={{
+                    opacity: 0,
+                    y: reduceMotion ? 0 : 14,
+                  }}
+                  whileInView={{
+                    opacity: 1,
+                    y: 0,
+                  }}
+                  viewport={{
+                    once: true,
+                    amount: 0.08,
+                  }}
+                  transition={{
+                    duration: reduceMotion ? 0 : 0.45,
+                    delay: reduceMotion ? 0 : index * 0.035,
+                    ease: EASE,
+                  }}
+                  className={`heritage-glass overflow-hidden rounded-[22px] transition-colors duration-300 ${
+                    isOpen
+                      ? "border-[var(--glass-border-strong)]"
+                      : "hover:border-[var(--glass-border-strong)]"
                   }`}
-                />
-              </button>
+                >
+                  <button
+                    type="button"
+                    aria-expanded={isOpen}
+                    aria-controls={`faq-answer-${index}`}
+                    onClick={() =>
+                      setOpenIndex((current) =>
+                        current === index ? null : index,
+                      )
+                    }
+                    className="flex min-h-16 w-full items-center gap-4 px-5 py-4 text-left sm:px-6"
+                  >
+                    <span
+                      className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-xl border text-[10px] font-semibold transition-colors ${
+                        isOpen
+                          ? "border-[var(--glass-border-strong)] bg-[rgba(212,175,90,0.09)] text-[var(--heritage-gold-light)]"
+                          : "border-[var(--glass-border)] bg-white/[0.02] text-[var(--heritage-bronze)]"
+                      }`}
+                    >
+                      {String(index + 1).padStart(2, "0")}
+                    </span>
 
-              <div
-                className={`grid transition-[grid-template-rows,opacity] duration-300 ${
-                  isOpen
-                    ? "grid-rows-[1fr] opacity-100"
-                    : "grid-rows-[0fr] opacity-0"
-                }`}
-              >
-                <div className="overflow-hidden">
-                  <p className="border-t border-[var(--glass-border)] px-5 pb-5 pt-4 text-sm leading-7 text-[var(--heritage-muted)] md:px-6">
-                    {item.answer}
-                  </p>
-                </div>
+                    <span
+                      className={`flex-1 text-sm font-semibold transition-colors sm:text-base ${
+                        isOpen
+                          ? "text-[var(--heritage-ivory)]"
+                          : "text-[var(--heritage-muted)]"
+                      }`}
+                    >
+                      {faq.question}
+                    </span>
+
+                    <span
+                      className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-xl border border-[var(--glass-border)] transition-transform duration-300 ${
+                        isOpen
+                          ? "rotate-180 bg-[rgba(212,175,90,0.07)]"
+                          : "bg-white/[0.02]"
+                      }`}
+                    >
+                      <ChevronDown
+                        className="h-4 w-4 text-[var(--heritage-gold-light)]"
+                        aria-hidden="true"
+                      />
+                    </span>
+                  </button>
+
+                  <AnimatePresence initial={false}>
+                    {isOpen && (
+                      <motion.div
+                        id={`faq-answer-${index}`}
+                        initial={
+                          reduceMotion
+                            ? false
+                            : {
+                                height: 0,
+                                opacity: 0,
+                              }
+                        }
+                        animate={{
+                          height: "auto",
+                          opacity: 1,
+                        }}
+                        exit={
+                          reduceMotion
+                            ? undefined
+                            : {
+                                height: 0,
+                                opacity: 0,
+                              }
+                        }
+                        transition={{
+                          duration: reduceMotion ? 0 : 0.28,
+                          ease: EASE,
+                        }}
+                        role="region"
+                        aria-labelledby={`faq-question-${index}`}
+                      >
+                        <div className="border-t border-[var(--glass-border)] px-5 pb-5 pt-4 sm:px-6 sm:pb-6">
+                          <div className="pl-12">
+                            <p className="max-w-2xl text-sm leading-7 text-[var(--heritage-muted)]">
+                              {faq.answer}
+                            </p>
+                          </div>
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </motion.div>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* ---------------------------------------------------------------- */}
+        {/* CTA */}
+        {/* ---------------------------------------------------------------- */}
+
+        <motion.div
+          initial={{
+            opacity: 0,
+            y: reduceMotion ? 0 : 16,
+          }}
+          whileInView={{
+            opacity: 1,
+            y: 0,
+          }}
+          viewport={{
+            once: true,
+            amount: 0.2,
+          }}
+          transition={{
+            duration: reduceMotion ? 0 : 0.6,
+            delay: reduceMotion ? 0 : 0.1,
+            ease: EASE,
+          }}
+          className="heritage-glass-strong mx-auto mt-10 max-w-4xl rounded-[26px] p-5 sm:p-6"
+        >
+          <div className="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
+            <div className="flex items-start gap-4">
+              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[rgba(212,175,90,0.08)]">
+                <MessageCircle
+                  className="h-4 w-4 text-[var(--heritage-gold-light)]"
+                  aria-hidden="true"
+                />
+              </div>
+
+              <div>
+                <p className="text-sm font-semibold text-[var(--heritage-ivory)]">
+                  Still curious?
+                </p>
+
+                <p className="mt-1 text-xs leading-5 text-[var(--heritage-muted)]">
+                  Ask HeritageAI about a place, monument or heritage story.
+                </p>
               </div>
             </div>
-          );
-        })}
+
+            <Link
+              href="/chat"
+              className="heritage-button heritage-button-gold group w-full shrink-0 sm:w-fit"
+            >
+              Ask HeritageAI
+              <ArrowRight
+                className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-1"
+                aria-hidden="true"
+              />
+            </Link>
+          </div>
+        </motion.div>
+
+        <div className="mt-8 flex items-center justify-center gap-2 text-[10px] uppercase tracking-[0.16em] text-[var(--heritage-bronze)]">
+          <Sparkles className="h-3 w-3" aria-hidden="true" />
+          Discover · Understand · Preserve
+        </div>
       </div>
     </section>
   );

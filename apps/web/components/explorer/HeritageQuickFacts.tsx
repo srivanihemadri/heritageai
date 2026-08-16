@@ -116,7 +116,7 @@ export default function HeritageQuickFacts({
           return (
             <div
               key={fact.label}
-              className="bg-[var(--heritage-bg)]/80 p-5 transition-colors duration-300 hover:bg-white/[0.035]"
+              className="bg-[var(--heritage-black)]/80 p-5 transition-colors duration-300 hover:bg-white/[0.035]"
             >
               <div className="flex items-start gap-3">
                 <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-[var(--glass-border)] bg-white/[0.025]">

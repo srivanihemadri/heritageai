@@ -1,0 +1,255 @@
+﻿[
+    {
+        "sources":  [
+                        {
+                            "organization":  "UNESCO World Heritage Centre",
+                            "display_order":  0,
+                            "language":  "en",
+                            "source_type":  "UNESCO",
+                            "publisher":  "UNESCO",
+                            "is_verified":  true,
+                            "title":  "Angkor"
+                        },
+                        {
+                            "organization":  "APSARA National Authority",
+                            "display_order":  1,
+                            "language":  "en",
+                            "source_type":  "WEBSITE",
+                            "publisher":  "APSARA National Authority",
+                            "is_verified":  true,
+                            "title":  "Angkor Wat and Angkor Archaeological Park"
+                        }
+                    ],
+        "site_slug":  "angkor-wat"
+    },
+    {
+        "sources":  [
+                        {
+                            "organization":  "UNESCO World Heritage Centre",
+                            "display_order":  0,
+                            "language":  "en",
+                            "source_type":  "UNESCO",
+                            "publisher":  "UNESCO",
+                            "is_verified":  true,
+                            "title":  "Red Fort Complex"
+                        },
+                        {
+                            "organization":  "Archaeological Survey of India",
+                            "display_order":  1,
+                            "language":  "en",
+                            "source_type":  "GOVERNMENT",
+                            "publisher":  "Government of India",
+                            "is_verified":  true,
+                            "title":  "Red Fort"
+                        }
+                    ],
+        "site_slug":  "red-fort"
+    },
+    {
+        "sources":  [
+                        {
+                            "organization":  "UNESCO World Heritage Centre",
+                            "display_order":  0,
+                            "language":  "en",
+                            "source_type":  "UNESCO",
+                            "publisher":  "UNESCO",
+                            "is_verified":  true,
+                            "title":  "Petra"
+                        },
+                        {
+                            "organization":  "Petra Development and Tourism Region Authority",
+                            "display_order":  1,
+                            "language":  "en",
+                            "source_type":  "GOVERNMENT",
+                            "publisher":  "Government of Jordan",
+                            "is_verified":  true,
+                            "title":  "Petra Archaeological Park"
+                        }
+                    ],
+        "site_slug":  "petra"
+    },
+    {
+        "sources":  [
+                        {
+                            "organization":  "UNESCO World Heritage Centre",
+                            "display_order":  0,
+                            "language":  "en",
+                            "source_type":  "UNESCO",
+                            "publisher":  "UNESCO",
+                            "is_verified":  true,
+                            "title":  "Sun Temple, Konârak"
+                        },
+                        {
+                            "organization":  "Archaeological Survey of India",
+                            "display_order":  1,
+                            "language":  "en",
+                            "source_type":  "GOVERNMENT",
+                            "publisher":  "Government of India",
+                            "is_verified":  true,
+                            "title":  "Konark Sun Temple"
+                        }
+                    ],
+        "site_slug":  "konark-sun-temple"
+    },
+    {
+        "sources":  [
+                        {
+                            "organization":  "UNESCO World Heritage Centre",
+                            "display_order":  0,
+                            "language":  "en",
+                            "source_type":  "UNESCO",
+                            "publisher":  "UNESCO",
+                            "is_verified":  true,
+                            "title":  "Great Living Chola Temples"
+                        },
+                        {
+                            "organization":  "Archaeological Survey of India",
+                            "display_order":  1,
+                            "language":  "en",
+                            "source_type":  "GOVERNMENT",
+                            "publisher":  "Government of India",
+                            "is_verified":  true,
+                            "title":  "Brihadeeswarar Temple"
+                        }
+                    ],
+        "site_slug":  "brihadeeswarar-temple"
+    },
+    {
+        "sources":  [
+                        {
+                            "organization":  "UNESCO World Heritage Centre",
+                            "display_order":  0,
+                            "language":  "en",
+                            "source_type":  "UNESCO",
+                            "publisher":  "UNESCO",
+                            "is_verified":  true,
+                            "title":  "Group of Monuments at Hampi"
+                        },
+                        {
+                            "organization":  "Archaeological Survey of India",
+                            "display_order":  1,
+                            "language":  "en",
+                            "source_type":  "GOVERNMENT",
+                            "publisher":  "Government of India",
+                            "is_verified":  true,
+                            "title":  "Group of Monuments at Hampi"
+                        }
+                    ],
+        "site_slug":  "hampi"
+    },
+    {
+        "sources":  [
+                        {
+                            "organization":  "UNESCO World Heritage Centre",
+                            "display_order":  0,
+                            "language":  "en",
+                            "source_type":  "UNESCO",
+                            "publisher":  "UNESCO",
+                            "is_verified":  true,
+                            "title":  "Acropolis, Athens"
+                        },
+                        {
+                            "organization":  "Hellenic Ministry of Culture",
+                            "display_order":  1,
+                            "language":  "en",
+                            "source_type":  "GOVERNMENT",
+                            "publisher":  "Hellenic Republic",
+                            "is_verified":  true,
+                            "title":  "Acropolis of Athens"
+                        }
+                    ],
+        "site_slug":  "acropolis-of-athens"
+    },
+    {
+        "sources":  [
+                        {
+                            "organization":  "UNESCO World Heritage Centre",
+                            "display_order":  0,
+                            "language":  "en",
+                            "source_type":  "UNESCO",
+                            "publisher":  "UNESCO",
+                            "is_verified":  true,
+                            "title":  "Ellora Caves"
+                        },
+                        {
+                            "organization":  "Archaeological Survey of India",
+                            "display_order":  1,
+                            "language":  "en",
+                            "source_type":  "GOVERNMENT",
+                            "publisher":  "Government of India",
+                            "is_verified":  true,
+                            "title":  "Ellora Caves"
+                        }
+                    ],
+        "site_slug":  "ellora-caves"
+    },
+    {
+        "sources":  [
+                        {
+                            "organization":  "UNESCO World Heritage Centre",
+                            "display_order":  0,
+                            "language":  "en",
+                            "source_type":  "UNESCO",
+                            "publisher":  "UNESCO",
+                            "is_verified":  true,
+                            "title":  "Ajanta Caves"
+                        },
+                        {
+                            "organization":  "Archaeological Survey of India",
+                            "display_order":  1,
+                            "language":  "en",
+                            "source_type":  "GOVERNMENT",
+                            "publisher":  "Government of India",
+                            "is_verified":  true,
+                            "title":  "Ajanta Caves"
+                        }
+                    ],
+        "site_slug":  "ajanta-caves"
+    },
+    {
+        "sources":  [
+                        {
+                            "organization":  "UNESCO World Heritage Centre",
+                            "display_order":  0,
+                            "language":  "en",
+                            "source_type":  "UNESCO",
+                            "publisher":  "UNESCO",
+                            "is_verified":  true,
+                            "title":  "Historic Sanctuary of Machu Picchu"
+                        },
+                        {
+                            "organization":  "Ministerio de Cultura del Perú",
+                            "display_order":  1,
+                            "language":  "es",
+                            "source_type":  "GOVERNMENT",
+                            "publisher":  "Government of Peru",
+                            "is_verified":  true,
+                            "title":  "Santuario Histórico de Machupicchu"
+                        }
+                    ],
+        "site_slug":  "machu-picchu"
+    },
+    {
+        "sources":  [
+                        {
+                            "organization":  "UNESCO World Heritage Centre",
+                            "display_order":  0,
+                            "language":  "en",
+                            "source_type":  "UNESCO",
+                            "publisher":  "UNESCO",
+                            "is_verified":  true,
+                            "title":  "Taj Mahal"
+                        },
+                        {
+                            "organization":  "Archaeological Survey of India",
+                            "display_order":  1,
+                            "language":  "en",
+                            "source_type":  "GOVERNMENT",
+                            "publisher":  "Government of India",
+                            "is_verified":  true,
+                            "title":  "Taj Mahal"
+                        }
+                    ],
+        "site_slug":  "taj-mahal"
+    }
+]

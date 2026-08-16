@@ -1,18 +1,16 @@
-"use client";
-
-import { motion } from "framer-motion";
-import { Sparkles } from "lucide-react";
+﻿import { Sparkles } from "lucide-react";
 
 export default function HeroBadge() {
   return (
-    <motion.div
-      initial={{ opacity: 0, y: -20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.7 }}
-      className="heritage-glass inline-flex items-center gap-2 rounded-full px-5 py-2 text-xs font-medium tracking-wide text-[var(--heritage-gold-light)] md:text-sm"
-    >
-      <Sparkles className="h-4 w-4 text-[var(--heritage-gold)]" />
-      AI-Powered Heritage Preservation Platform
-    </motion.div>
+    <div className="heritage-badge w-fit">
+      <span className="relative flex h-5 w-5 items-center justify-center rounded-full bg-[rgba(212,175,90,0.10)]">
+        <Sparkles
+          className="h-3 w-3 text-[var(--heritage-gold-light)]"
+          aria-hidden="true"
+        />
+      </span>
+
+      <span>AI-powered heritage intelligence</span>
+    </div>
   );
 }
