@@ -5,7 +5,6 @@ import Logo from "../ui/logo/Logo";
 const footerLinks = [
   { label: "Home", href: "/" },
   { label: "Explorer", href: "/explorer" },
-  { label: "AI Chat", href: "/chat" },
   { label: "About", href: "/about" },
 ];
 

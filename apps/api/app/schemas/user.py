@@ -31,6 +31,7 @@ class UserResponse(BaseModel):
     id: str
     full_name: str
     email: EmailStr
+    profile_image_url: str | None = None
     role: str
     is_active: bool
 

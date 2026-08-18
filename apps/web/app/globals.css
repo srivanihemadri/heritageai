@@ -516,3 +516,29 @@ body {
     );
   }
 }
+
+
+@keyframes heritage-feature-marquee {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(calc(-50% - 0.5rem));
+  }
+}
+
+.heritage-feature-marquee {
+  animation: heritage-feature-marquee 45s linear infinite;
+  will-change: transform;
+}
+
+.heritage-feature-marquee:hover {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .heritage-feature-marquee {
+    animation: none;
+  }
+}

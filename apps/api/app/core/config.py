@@ -28,6 +28,9 @@ class Settings(BaseSettings):
 
     GEMINI_API_KEY: str
 
+    # Google Authentication
+    GOOGLE_OAUTH_CLIENT_IDS: str
+
     GEMINI_EMBEDDING_MODEL: str = "gemini-embedding-001"
 
     GEMINI_EMBEDDING_DIMENSIONS: int = 768

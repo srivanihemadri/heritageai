@@ -9,6 +9,7 @@ export interface TokenResponse {
 }
 
 export interface UserResponse {
+  profile_image_url: string | null;
   id: string;
   full_name: string;
   email: string;

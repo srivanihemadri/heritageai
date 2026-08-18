@@ -1,7 +1,8 @@
 ﻿"use client";
 
+import { useAuth } from "@/providers/AuthProvider";
+
 import { useState } from "react";
-import Link from "next/link";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import {
   ArrowRight,
@@ -18,16 +19,6 @@ const faqs = [
     question: "What is HeritageAI?",
     answer:
       "HeritageAI is a heritage discovery and preservation platform that combines exploration, conversational AI and visual intelligence to help people understand cultural places and their stories.",
-  },
-  {
-    question: "How does the AI Heritage Guide work?",
-    answer:
-      "The guide retrieves available HeritageAI evidence, evaluates whether that evidence is relevant to the question and then generates an answer within the available grounding context. When the evidence is insufficient, the system is designed not to present unsupported information as fact.",
-  },
-  {
-    question: "What can the Heritage Scanner do?",
-    answer:
-      "The Heritage Scanner accepts a heritage image, analyzes the visual input and produces a structured heritage result. The result can include identification information, historical context, architectural details, confidence and grounding status.",
   },
   {
     question: "Can the AI identify every heritage site?",
@@ -54,6 +45,8 @@ const faqs = [
 export default function FAQ() {
   const [openIndex, setOpenIndex] = useState<number | null>(0);
   const reduceMotion = useReducedMotion();
+  const { isAuthenticated, isLoading } = useAuth();
+
 
   return (
     <section
@@ -231,63 +224,6 @@ export default function FAQ() {
             })}
           </div>
         </div>
-
-        {/* ---------------------------------------------------------------- */}
-        {/* CTA */}
-        {/* ---------------------------------------------------------------- */}
-
-        <motion.div
-          initial={{
-            opacity: 0,
-            y: reduceMotion ? 0 : 16,
-          }}
-          whileInView={{
-            opacity: 1,
-            y: 0,
-          }}
-          viewport={{
-            once: true,
-            amount: 0.2,
-          }}
-          transition={{
-            duration: reduceMotion ? 0 : 0.6,
-            delay: reduceMotion ? 0 : 0.1,
-            ease: EASE,
-          }}
-          className="heritage-glass-strong mx-auto mt-10 max-w-4xl rounded-[26px] p-5 sm:p-6"
-        >
-          <div className="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
-            <div className="flex items-start gap-4">
-              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[rgba(212,175,90,0.08)]">
-                <MessageCircle
-                  className="h-4 w-4 text-[var(--heritage-gold-light)]"
-                  aria-hidden="true"
-                />
-              </div>
-
-              <div>
-                <p className="text-sm font-semibold text-[var(--heritage-ivory)]">
-                  Still curious?
-                </p>
-
-                <p className="mt-1 text-xs leading-5 text-[var(--heritage-muted)]">
-                  Ask HeritageAI about a place, monument or heritage story.
-                </p>
-              </div>
-            </div>
-
-            <Link
-              href="/chat"
-              className="heritage-button heritage-button-gold group w-full shrink-0 sm:w-fit"
-            >
-              Ask HeritageAI
-              <ArrowRight
-                className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-1"
-                aria-hidden="true"
-              />
-            </Link>
-          </div>
-        </motion.div>
 
         <div className="mt-8 flex items-center justify-center gap-2 text-[10px] uppercase tracking-[0.16em] text-[var(--heritage-bronze)]">
           <Sparkles className="h-3 w-3" aria-hidden="true" />

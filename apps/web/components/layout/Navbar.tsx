@@ -5,18 +5,18 @@ import Link from "next/link";
 import { Menu, X } from "lucide-react";
 import { usePathname } from "next/navigation";
 import Logo from "../ui/logo/Logo";
+import { useAuth } from "@/providers/AuthProvider";
 
 const navigation = [
   { label: "Home", href: "/" },
   { label: "Explorer", href: "/explorer" },
-  { label: "AI Guide", href: "/chat" },
-  { label: "Scanner", href: "/scanner" },
   { label: "About", href: "/about" },
 ];
 
 export default function Navbar() {
   const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
+  const { user, isAuthenticated, logout } = useAuth();
 
   useEffect(() => {
     setIsOpen(false);
@@ -37,6 +37,10 @@ export default function Navbar() {
       document.removeEventListener("keydown", handleKeyDown);
     };
   }, [isOpen]);
+
+  if (pathname === "/login") {
+    return null;
+  }
 
   const isActive = (href: string) => {
     if (href === "/") {
@@ -77,22 +81,56 @@ export default function Navbar() {
               </Link>
             );
           })}
+
+          {isAuthenticated && user && (
+            <Link
+              href="/#download-app"
+              className="relative rounded-xl px-4 py-2.5 text-sm font-medium text-[var(--heritage-muted)] transition-all duration-200 hover:bg-white/[0.04] hover:text-[var(--heritage-ivory)]"
+            >
+              Download App
+            </Link>
+          )}
         </div>
 
         <div className="hidden items-center gap-2 md:flex">
-          <Link
-            href="/login"
-            className="heritage-button heritage-button-glass min-h-10 px-4 text-sm"
-          >
-            Login
-          </Link>
+          {isAuthenticated && user ? (
+            <div className="relative flex items-center gap-2">
+              <Link
+                href="/profile"
+                className="flex min-h-10 items-center gap-2 rounded-xl border border-[var(--glass-border)] bg-white/[0.03] px-3 py-2 text-sm font-medium text-[var(--heritage-ivory)] transition-all hover:bg-white/[0.06]"
+              >
+                {user.profile_image_url ? (
+                  <img
+                    src={user.profile_image_url}
+                    alt={`${user.full_name || "HeritageAI"} profile`}
+                    className="h-7 w-7 rounded-full object-cover"
+                  />
+                ) : (
+                  <span className="flex h-7 w-7 items-center justify-center rounded-full bg-[rgba(212,175,90,0.12)] text-xs font-semibold text-[var(--heritage-gold-light)]">
+                    {user.full_name?.charAt(0)?.toUpperCase() || "U"}
+                  </span>
+                )}
+                <span className="max-w-32 truncate">
+                  {user.full_name || "Profile"}
+                </span>
+              </Link>
 
-          <Link
-            href="/login"
-            className="heritage-button heritage-button-gold heritage-gold-glow min-h-10 px-5 text-sm"
-          >
-            Get Started
-          </Link>
+              <button
+                type="button"
+                onClick={logout}
+                className="heritage-button heritage-button-glass min-h-10 px-4 text-sm"
+              >
+                Leave
+              </button>
+            </div>
+          ) : (
+            <Link
+              href="/login"
+              className="heritage-button heritage-button-gold heritage-gold-glow min-h-10 px-5 text-sm"
+            >
+              Get In
+            </Link>
+          )}
         </div>
 
         <button
@@ -134,22 +172,61 @@ export default function Navbar() {
                 </Link>
               );
             })}
+
+            {isAuthenticated && user && (
+              <Link
+                href="/#download-app"
+                onClick={() => setIsOpen(false)}
+                className="flex items-center justify-between rounded-xl px-4 py-3.5 text-sm font-medium text-[var(--heritage-muted)] transition-all hover:bg-white/[0.04] hover:text-[var(--heritage-ivory)]"
+              >
+                <span>Download App</span>
+              </Link>
+            )}
           </div>
 
-          <div className="grid grid-cols-2 gap-2 border-t border-[var(--glass-border)] p-3">
-            <Link
-              href="/login"
-              className="heritage-button heritage-button-glass min-h-11 text-sm"
-            >
-              Login
-            </Link>
+          <div className="border-t border-[var(--glass-border)] p-3">
+            {isAuthenticated && user ? (
+              <div className="space-y-2">
+                <Link
+                  href="/profile"
+                  onClick={() => setIsOpen(false)}
+                  className="flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium text-[var(--heritage-ivory)] transition-all hover:bg-white/[0.04]"
+                >
+                  {user.profile_image_url ? (
+                    <img
+                      src={user.profile_image_url}
+                      alt={`${user.full_name || "HeritageAI"} profile`}
+                      className="h-8 w-8 rounded-full object-cover"
+                    />
+                  ) : (
+                    <span className="flex h-8 w-8 items-center justify-center rounded-full bg-[rgba(212,175,90,0.12)] text-xs font-semibold text-[var(--heritage-gold-light)]">
+                      {user.full_name?.charAt(0)?.toUpperCase() || "U"}
+                    </span>
+                  )}
+                  <span className="truncate">
+                    {user.full_name || "Profile"}
+                  </span>
+                </Link>
 
-            <Link
-              href="/login"
-              className="heritage-button heritage-button-gold min-h-11 text-sm"
-            >
-              Get Started
-            </Link>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setIsOpen(false);
+                    logout();
+                  }}
+                  className="heritage-button heritage-button-glass min-h-11 w-full text-sm"
+                >
+                  Leave
+                </button>
+              </div>
+            ) : (
+              <Link
+                href="/login"
+                className="heritage-button heritage-button-gold min-h-11 w-full text-sm"
+              >
+                Get In
+              </Link>
+            )}
           </div>
         </div>
       )}
