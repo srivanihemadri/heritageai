@@ -33,6 +33,13 @@ ATTRIBUTE_TERMS = {
 
 UNRELATED_MARKERS = (
     "capital of japan",
+    "capital of brazil",
+    "capital of india",
+    "capital of china",
+    "capital of france",
+    "capital of germany",
+    "capital of italy",
+    "capital of spain",
     "quantum mechanics",
 )
 
@@ -127,6 +134,73 @@ class RetrievalRelevanceGate:
         )
 
     @staticmethod
+    def _is_heritage_intent(query: str) -> bool:
+        q = query.lower().strip()
+
+        if not q:
+            return False
+
+        heritage_terms = (
+            "heritage",
+            "monument",
+            "historical",
+            "history",
+            "historic",
+            "temple",
+            "fort",
+            "palace",
+            "tomb",
+            "mausoleum",
+            "mosque",
+            "church",
+            "cathedral",
+            "shrine",
+            "archaeological",
+            "archaeological site",
+            "world heritage",
+            "unesco",
+            "architecture",
+            "architectural",
+            "landmark",
+            "site",
+            "built",
+            "constructed",
+            "construction",
+            "founded",
+            "dynasty",
+            "empire",
+            "civilization",
+            "civilisation",
+            "inscription",
+            "restoration",
+            "preservation",
+            "conservation",
+            "heritage site",
+        )
+
+        if any(term in q for term in heritage_terms):
+            return True
+
+        if any(
+            term in q
+            for terms in ATTRIBUTE_TERMS.values()
+            for term in terms
+        ):
+            return True
+
+        if any(
+            term in q
+            for terms in EVIDENCE_TYPE_TERMS.values()
+            for term in terms
+        ):
+            return True
+
+        if any(q.startswith(prefix) for prefix in CLAIM_PREFIXES):
+            return True
+
+        return False
+
+    @staticmethod
     def _is_unrelated(query: str) -> bool:
 
         q = query.lower()
@@ -135,6 +209,86 @@ class RetrievalRelevanceGate:
             marker in q
             for marker in UNRELATED_MARKERS
         )
+
+    @staticmethod
+    def _extract_explicit_site_entity(
+        query: str,
+    ) -> str | None:
+        query_text = " ".join(
+            query.lower().split()
+        )
+
+        if not query_text:
+            return None
+
+        heritage_entities = (
+            "acropolis of athens",
+            "brihadeeswarar temple",
+            "konark sun temple",
+            "machu picchu",
+            "taj mahal",
+            "angkor wat",
+            "ajanta caves",
+            "ellora caves",
+            "red fort",
+            "hampi",
+            "acropolis",
+            "great wall of china",
+        )
+
+        for entity in sorted(
+            heritage_entities,
+            key=len,
+            reverse=True,
+        ):
+            if entity in query_text:
+                return entity
+
+        return None
+    @staticmethod
+    def _query_contains_explicit_site(
+        query: str,
+        evidence: list[RetrievalEvidence],
+    ) -> bool:
+        return (
+            RetrievalRelevanceGate
+            ._extract_explicit_site_entity(query)
+            is not None
+        )
+
+    @staticmethod
+    def _site_entity_supported(
+        query: str,
+        evidence: list[RetrievalEvidence],
+    ) -> bool:
+        query_text = " ".join(
+            query.lower().split()
+        )
+
+        if not query_text:
+            return False
+
+        for item in evidence:
+            site_name = getattr(
+                item,
+                "site_name",
+                None,
+            )
+
+            if not site_name:
+                continue
+
+            normalized_site_name = " ".join(
+                str(site_name).lower().split()
+            )
+
+            if not normalized_site_name:
+                continue
+
+            if normalized_site_name in query_text:
+                return True
+
+        return False
 
     @staticmethod
     def _attribute_supported(
@@ -294,6 +448,25 @@ class RetrievalRelevanceGate:
                 score_margin=score_margin,
                 verified_evidence_count=verified_count,
             )
+        if (
+            self._query_contains_explicit_site(
+                query,
+                evidence,
+            )
+            and not self._site_entity_supported(
+                query,
+                evidence,
+            )
+        ):
+
+            return RelevanceDecision(
+                allowed=False,
+                reason="HERITAGE_ENTITY_MISMATCH",
+                top_score=top_score,
+                second_score=second_score,
+                score_margin=score_margin,
+                verified_evidence_count=verified_count,
+            )
 
         # -----------------------------------------------------
         # Claim verification is intentionally handled before
@@ -345,6 +518,25 @@ class RetrievalRelevanceGate:
 
         if requested_attributes:
 
+            explicit_site_entity = (
+                self._extract_explicit_site_entity(query)
+            )
+
+            # Contextual questions such as
+            # "Where is it located?" do not explicitly name
+            # a heritage site. When retrieval has already produced
+            # verified evidence, allow the question to operate on
+            # that contextual heritage entity.
+            if explicit_site_entity is None:
+                return RelevanceDecision(
+                    allowed=True,
+                    reason="CONTEXTUAL_ATTRIBUTE_WITH_VERIFIED_EVIDENCE",
+                    top_score=top_score,
+                    second_score=second_score,
+                    score_margin=score_margin,
+                    verified_evidence_count=verified_count,
+                )
+
             combined_text = "\n".join(
                 self._text(item)
                 for item in evidence
@@ -384,5 +576,11 @@ __all__ = [
     "RetrievalRelevanceGate",
     "RelevanceDecision",
 ]
+
+
+
+
+
+
 
 

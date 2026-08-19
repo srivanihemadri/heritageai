@@ -14,6 +14,7 @@ class RetrievalEvidence:
     language: str
     is_verified: bool
     site_id: str
+    site_name: str
     source_id: str | None
 
 
@@ -22,3 +23,4 @@ class RetrievalResponse:
     query: str
     top_k: int
     results: list[RetrievalEvidence]
+

@@ -14,6 +14,10 @@ from app.services.ai.retrieval import (
 from app.services.ai.retrieval.relevance_gate import (
     RetrievalRelevanceGate,
 )
+from app.services.ai.generation.conversation import (
+    ConversationIntent,
+    ConversationalIntentService,
+)
 
 
 class GeminiQuotaExceededError(RuntimeError):
@@ -59,6 +63,7 @@ class GroundedAnswerService:
         )
 
         self.relevance_gate = RetrievalRelevanceGate()
+        self.conversation = ConversationalIntentService()
 
 
     def answer(
@@ -72,6 +77,21 @@ class GroundedAnswerService:
         if not normalized_query:
             raise ValueError(
                 "Question cannot be empty."
+            )
+
+
+        conversation_intent = self.conversation.detect(
+            normalized_query
+        )
+
+        if conversation_intent != ConversationIntent.NONE:
+            return GroundedAnswer(
+                query=normalized_query,
+                answer=self.conversation.respond(
+                    conversation_intent
+                ),
+                sources=[],
+                grounded=False,
             )
 
 
@@ -283,3 +303,4 @@ Return only the answer text.
     def close(self) -> None:
 
         self.retrieval.close()
+

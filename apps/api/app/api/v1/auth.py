@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, status
+﻿from fastapi import APIRouter, Depends, status
 from pydantic import BaseModel
 from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy.orm import Session
@@ -83,11 +83,6 @@ def login(
             error_code="INVALID_CREDENTIALS",
         )
 
-    # Synchronize the latest Google profile image for every Google login.
-    if google_profile_image and user.profile_image_url != google_profile_image:
-        user.profile_image_url = google_profile_image
-        db.commit()
-        db.refresh(user)
 
     if not user.is_active:
         raise UnauthorizedException(

@@ -1,4 +1,4 @@
-from sqlalchemy import text
+﻿from sqlalchemy import text
 
 from app.db.session import SessionLocal
 from app.services.ai.embedding import GeminiEmbeddingService
@@ -122,6 +122,7 @@ class RAGRetrievalService:
                         c.content,
 
                         d.site_id,
+                        s.name AS site_name,
                         d.source_id,
                         d.document_type,
                         d.title,
@@ -133,6 +134,8 @@ class RAGRetrievalService:
 
                     INNER JOIN ai_knowledge_documents d
                         ON d.id = c.document_id
+                    INNER JOIN heritage_sites s
+                        ON s.id = d.site_id
 
                     WHERE c.id IN ({placeholders})
                       AND c.is_active = 1
@@ -208,6 +211,9 @@ class RAGRetrievalService:
                         site_id=str(
                             row["site_id"]
                         ),
+                        site_name=str(
+                            row["site_name"]
+                        ),
                         source_id=(
                             str(row["source_id"])
                             if row["source_id"]
@@ -231,3 +237,4 @@ class RAGRetrievalService:
     def close(self) -> None:
 
         self.qdrant.close()
+

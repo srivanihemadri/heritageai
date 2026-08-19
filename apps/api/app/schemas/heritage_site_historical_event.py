@@ -1,4 +1,4 @@
-from datetime import date
+﻿from datetime import date
 
 from pydantic import BaseModel, ConfigDict, Field
 
@@ -38,7 +38,7 @@ class HeritageSiteHistoricalEventResponse(BaseModel):
     title: str
     description: str | None
     event_date: date | None
-    date_label: str | None
+    date_label: str | None = None
     date_precision: DatePrecision
     significance: str | None
     display_order: int
@@ -51,3 +51,4 @@ class HeritageSiteHistoricalEventResponse(BaseModel):
 class HeritageSiteHistoricalEventListResponse(BaseModel):
     events: list[HeritageSiteHistoricalEventResponse]
     total: int
+
