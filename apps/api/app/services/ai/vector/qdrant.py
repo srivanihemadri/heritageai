@@ -4,6 +4,8 @@ from typing import Any
 from qdrant_client import QdrantClient
 from qdrant_client.http import models
 
+from app.core.config import settings
+
 
 COLLECTION_NAME = "heritageai_knowledge"
 VECTOR_SIZE = 768
@@ -38,20 +40,27 @@ class QdrantVectorRepository:
         path: Path | None = None,
     ) -> None:
 
-        self.path = (
-            path
-            if path is not None
-            else get_qdrant_path()
-        )
+        if settings.QDRANT_URL:
+            self.path = None
+            self.client = QdrantClient(
+                url=settings.QDRANT_URL,
+                api_key=settings.QDRANT_API_KEY,
+            )
+        else:
+            self.path = (
+                path
+                if path is not None
+                else get_qdrant_path()
+            )
 
-        self.path.mkdir(
-            parents=True,
-            exist_ok=True,
-        )
+            self.path.mkdir(
+                parents=True,
+                exist_ok=True,
+            )
 
-        self.client = QdrantClient(
-            path=str(self.path),
-        )
+            self.client = QdrantClient(
+                path=str(self.path),
+            )
 
         self._ensure_collection()
 
@@ -136,3 +145,4 @@ class QdrantVectorRepository:
 
     def close(self) -> None:
         self.client.close()
+

@@ -1,4 +1,4 @@
-from pydantic_settings import BaseSettings, SettingsConfigDict
+﻿from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class Settings(BaseSettings):
@@ -31,6 +31,9 @@ class Settings(BaseSettings):
     # Google Authentication
     GOOGLE_OAUTH_CLIENT_IDS: str
 
+    QDRANT_URL: str | None = None
+    QDRANT_API_KEY: str | None = None
+
     GEMINI_EMBEDDING_MODEL: str = "gemini-embedding-001"
 
     GEMINI_EMBEDDING_DIMENSIONS: int = 768
@@ -43,6 +46,7 @@ class Settings(BaseSettings):
 
 
 settings = Settings()
+
 
 
 
