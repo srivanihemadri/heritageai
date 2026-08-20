@@ -1,6 +1,8 @@
 import axios from "axios";
+import { GoogleSignin } from "@react-native-google-signin/google-signin";
 
 import apiClient from "@/lib/api-client";
+import { env } from "@/config/env";
 import {
   clearAccessToken,
   setAccessToken,
@@ -11,6 +13,13 @@ import type {
   TokenResponse,
   UserResponse,
 } from "@/types/auth";
+
+async function configureGoogleSignIn(): Promise<void> {
+  await GoogleSignin.configure({
+    webClientId: env.googleWebClientId,
+    offlineAccess: false,
+  });
+}
 
 export async function login(
   data: LoginRequest,
@@ -38,22 +47,48 @@ export async function login(
     response.status,
   );
 
+  await setAccessToken(response.data.access_token);
+
+  return response.data;
+}
+
+export async function loginWithGoogle(
+  idToken: string,
+): Promise<TokenResponse> {
+  const normalizedToken = idToken.trim();
+
+  if (!normalizedToken) {
+    throw new Error("Google ID token is required.");
+  }
+
   console.log(
-    "[AUTH TRACE] login: storing access token",
+    "[AUTH TRACE] Google login: sending ID token",
   );
 
-  try {
-    await setAccessToken(response.data.access_token);
-    console.log(
-      "[AUTH TRACE] login: token storage success",
-    );
-  } catch (error) {
-    console.error(
-      "[AUTH TRACE] login: token storage FAILED",
-      error,
-    );
-    throw error;
-  }
+  const response = await axios.post<TokenResponse>(
+    `${apiClient.defaults.baseURL}/auth/google`,
+    {
+      id_token: normalizedToken,
+    },
+    {
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      timeout: 15000,
+    },
+  );
+
+  console.log(
+    "[AUTH TRACE] Google login: HTTP success",
+    response.status,
+  );
+
+  await setAccessToken(response.data.access_token);
+
+  console.log(
+    "[AUTH TRACE] Google login: token storage success",
+  );
 
   return response.data;
 }
@@ -84,5 +119,32 @@ export async function getCurrentUser(): Promise<UserResponse> {
 }
 
 export async function logout(): Promise<void> {
-  await clearAccessToken();
+  console.log(
+    "[AUTH TRACE] logout: configuring Google Sign-In",
+  );
+
+  try {
+    await configureGoogleSignIn();
+
+    console.log(
+      "[AUTH TRACE] logout: Google Sign-In configured",
+    );
+
+    await GoogleSignin.signOut();
+
+    console.log(
+      "[AUTH TRACE] logout: Google sign-out success",
+    );
+  } catch (error) {
+    console.error(
+      "[AUTH TRACE] logout: Google sign-out failed",
+      error,
+    );
+  } finally {
+    await clearAccessToken();
+
+    console.log(
+      "[AUTH TRACE] logout: HeritageAI access token cleared",
+    );
+  }
 }

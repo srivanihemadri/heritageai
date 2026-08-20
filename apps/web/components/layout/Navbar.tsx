@@ -1,10 +1,11 @@
-"use client";
+﻿"use client";
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Menu, X } from "lucide-react";
 import { usePathname } from "next/navigation";
 import Logo from "../ui/logo/Logo";
+import UserAvatar from "../ui/UserAvatar";
 import { useAuth } from "@/providers/AuthProvider";
 
 const navigation = [
@@ -99,17 +100,11 @@ export default function Navbar() {
                 href="/profile"
                 className="flex min-h-10 items-center gap-2 rounded-xl border border-[var(--glass-border)] bg-white/[0.03] px-3 py-2 text-sm font-medium text-[var(--heritage-ivory)] transition-all hover:bg-white/[0.06]"
               >
-                {user.profile_image_url ? (
-                  <img
-                    src={user.profile_image_url}
-                    alt={`${user.full_name || "HeritageAI"} profile`}
-                    className="h-7 w-7 rounded-full object-cover"
-                  />
-                ) : (
-                  <span className="flex h-7 w-7 items-center justify-center rounded-full bg-[rgba(212,175,90,0.12)] text-xs font-semibold text-[var(--heritage-gold-light)]">
-                    {user.full_name?.charAt(0)?.toUpperCase() || "U"}
-                  </span>
-                )}
+                <UserAvatar
+                  src={user.profile_image_url}
+                  name={user.full_name}
+                />
+
                 <span className="max-w-32 truncate">
                   {user.full_name || "Profile"}
                 </span>
@@ -192,17 +187,12 @@ export default function Navbar() {
                   onClick={() => setIsOpen(false)}
                   className="flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium text-[var(--heritage-ivory)] transition-all hover:bg-white/[0.04]"
                 >
-                  {user.profile_image_url ? (
-                    <img
-                      src={user.profile_image_url}
-                      alt={`${user.full_name || "HeritageAI"} profile`}
-                      className="h-8 w-8 rounded-full object-cover"
-                    />
-                  ) : (
-                    <span className="flex h-8 w-8 items-center justify-center rounded-full bg-[rgba(212,175,90,0.12)] text-xs font-semibold text-[var(--heritage-gold-light)]">
-                      {user.full_name?.charAt(0)?.toUpperCase() || "U"}
-                    </span>
-                  )}
+                  <UserAvatar
+                    src={user.profile_image_url}
+                    name={user.full_name}
+                    size="md"
+                  />
+
                   <span className="truncate">
                     {user.full_name || "Profile"}
                   </span>

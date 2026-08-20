@@ -1,4 +1,4 @@
-import { create } from "zustand";
+﻿import { create } from "zustand";
 
 import {
   clearAccessToken,
@@ -7,6 +7,7 @@ import {
 import {
   getCurrentUser,
   login as loginRequest,
+  loginWithGoogle as loginWithGoogleRequest,
   logout as logoutRequest,
 } from "@/services/auth";
 import type {
@@ -24,6 +25,7 @@ interface AuthState {
   user: UserResponse | null;
   initialize: () => Promise<void>;
   login: (credentials: LoginRequest) => Promise<void>;
+  loginWithGoogle: (idToken: string) => Promise<void>;
   logout: () => Promise<void>;
 }
 
@@ -61,6 +63,17 @@ export const useAuthStore = create<AuthState>((set) => ({
 
   login: async (credentials) => {
     await loginRequest(credentials);
+
+    const user = await getCurrentUser();
+
+    set({
+      status: "authenticated",
+      user,
+    });
+  },
+
+  loginWithGoogle: async (idToken) => {
+    await loginWithGoogleRequest(idToken);
 
     const user = await getCurrentUser();
 

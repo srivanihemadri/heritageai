@@ -1,4 +1,4 @@
-import { Ionicons } from "@expo/vector-icons";
+﻿import { Ionicons } from "@expo/vector-icons";
 import * as ImageManipulator from "expo-image-manipulator";
 import * as ImagePicker from "expo-image-picker";
 import { useRouter } from "expo-router";
@@ -318,17 +318,45 @@ export default function AIHeritageScanner() {
         contentContainerStyle={styles.content}
       >
         <View style={styles.header}>
-          <Pressable
-            onPress={() => router.back()}
-            style={styles.backButton}
-            accessibilityLabel="Go back"
-          >
-            <Ionicons
-              name="arrow-back"
-              size={20}
-              color={HeritageColors.ivory}
-            />
-          </Pressable>
+          <View style={styles.headerTopRow}>
+            <Pressable
+              onPress={() => router.back()}
+              style={({ pressed }) => [
+                styles.backButton,
+                pressed && styles.headerButtonPressed,
+              ]}
+              accessibilityLabel="Go back"
+            >
+              <Ionicons
+                name="arrow-back"
+                size={22}
+                color={HeritageColors.ivory}
+              />
+            </Pressable>
+
+            <View style={styles.brandLockup}>
+              <Text style={styles.brandText}>
+                HeritageAI
+              </Text>
+
+              <View style={styles.brandDivider} />
+            </View>
+
+            <Pressable
+              onPress={captureImage}
+              style={({ pressed }) => [
+                styles.cameraHeaderButton,
+                pressed && styles.headerButtonPressed,
+              ]}
+              accessibilityLabel="Open camera"
+            >
+              <Ionicons
+                name="camera-outline"
+                size={21}
+                color={HeritageColors.goldLight}
+              />
+            </Pressable>
+          </View>
 
           <View style={styles.headerText}>
             <Text style={styles.eyebrow}>
@@ -348,12 +376,26 @@ export default function AIHeritageScanner() {
 
         {!selectedImage && (
           <View style={styles.capturePanel}>
-            <View style={styles.scannerIcon}>
-              <Ionicons
-                name="scan-outline"
-                size={42}
-                color={HeritageColors.goldLight}
-              />
+            <View style={styles.scanVisual}>
+              <View style={styles.scanCornerTopLeft} />
+              <View style={styles.scanCornerTopRight} />
+              <View style={styles.scanCornerBottomLeft} />
+              <View style={styles.scanCornerBottomRight} />
+
+              <View style={styles.scannerIcon}>
+                <Ionicons
+                  name="scan-outline"
+                  size={38}
+                  color={HeritageColors.goldLight}
+                />
+              </View>
+
+              <View style={styles.scanHint}>
+                <View style={styles.scanHintDot} />
+                <Text style={styles.scanHintText}>
+                  READY TO SCAN
+                </Text>
+              </View>
             </View>
 
             <Text style={styles.panelTitle}>
@@ -544,7 +586,7 @@ export default function AIHeritageScanner() {
                   <Text style={styles.locationText}>
                     {[result.location, result.country]
                       .filter(Boolean)
-                      .join(" � ")}
+                      .join(" ï¿½ ")}
                   </Text>
                 </View>
               ) : null}
@@ -723,97 +765,247 @@ const styles = StyleSheet.create({
   },
 
   content: {
-    paddingHorizontal: HeritageSpacing.xl,
-    paddingTop: 28,
+    paddingHorizontal: 18,
+    paddingTop: 22,
     paddingBottom: 130,
   },
 
   header: {
+    marginBottom: 24,
+  },
+
+  headerTopRow: {
+    width: "100%",
     flexDirection: "row",
-    alignItems: "flex-start",
-    gap: 14,
-    marginBottom: 28,
+    alignItems: "center",
+    justifyContent: "space-between",
+    marginBottom: 22,
   },
 
   backButton: {
-    width: 42,
-    height: 42,
+    width: 48,
+    height: 48,
     alignItems: "center",
     justifyContent: "center",
-    borderRadius: 14,
-    backgroundColor: HeritageColors.surfaceSoft,
+    borderRadius: 17,
+    backgroundColor: "rgba(255,255,255,0.045)",
     borderWidth: 1,
-    borderColor: HeritageColors.border,
+    borderColor: HeritageColors.borderStrong,
+  },
+
+  cameraHeaderButton: {
+    width: 48,
+    height: 48,
+    alignItems: "center",
+    justifyContent: "center",
+    borderRadius: 17,
+    backgroundColor: "rgba(197,140,255,0.10)",
+    borderWidth: 1,
+    borderColor: HeritageColors.borderStrong,
+  },
+
+  headerButtonPressed: {
+    opacity: 0.68,
+    transform: [{ scale: 0.94 }],
+  },
+
+  brandLockup: {
+    alignItems: "center",
+    justifyContent: "center",
+  },
+
+  brandText: {
+    color: HeritageColors.goldLight,
+    fontSize: 21,
+    fontWeight: "800",
+    letterSpacing: -0.3,
+  },
+
+  brandDivider: {
+    width: 34,
+    height: 1,
+    marginTop: 6,
+    backgroundColor: HeritageColors.gold,
   },
 
   headerText: {
-    flex: 1,
+    alignItems: "flex-start",
   },
 
   eyebrow: {
-    color: HeritageColors.gold,
+    color: HeritageColors.goldLight,
     fontSize: 10,
-    fontWeight: "800",
-    letterSpacing: 1.8,
+    fontWeight: "900",
+    letterSpacing: 2.2,
   },
 
   title: {
-    marginTop: 7,
+    marginTop: 6,
     color: HeritageColors.ivory,
-    fontSize: HeritageTypography.title,
-    lineHeight: 34,
-    fontWeight: "800",
-    letterSpacing: -0.7,
+    fontSize: 31,
+    lineHeight: 36,
+    fontWeight: "900",
+    letterSpacing: -0.9,
   },
 
   subtitle: {
     marginTop: 8,
     color: HeritageColors.muted,
-    fontSize: HeritageTypography.body,
+    fontSize: 15,
     lineHeight: 22,
   },
 
   capturePanel: {
-    padding: 24,
+    paddingHorizontal: 20,
+    paddingTop: 26,
+    paddingBottom: 20,
     alignItems: "center",
-    borderRadius: HeritageRadius.glass,
-    backgroundColor: HeritageColors.surface,
+    borderRadius: 28,
+    backgroundColor: "rgba(255,255,255,0.045)",
     borderWidth: 1,
-    borderColor: HeritageColors.border,
+    borderColor: HeritageColors.borderStrong,
+    shadowColor: "#000000",
+    shadowOffset: {
+      width: 0,
+      height: 12,
+    },
+    shadowOpacity: 0.22,
+    shadowRadius: 24,
+    elevation: 8,
+  },
+
+  scanVisual: {
+    width: "100%",
+    height: 178,
+    alignItems: "center",
+    justifyContent: "center",
+    marginBottom: 18,
+    borderRadius: HeritageRadius.lg,
+    borderWidth: 1,
+    borderColor: "rgba(255,255,255,0.10)",
+    backgroundColor: "rgba(255,255,255,0.025)",
+    overflow: "hidden",
+    position: "relative",
+  },
+
+  scanCornerTopLeft: {
+    position: "absolute",
+    top: 20,
+    left: 20,
+    width: 30,
+    height: 30,
+    borderTopWidth: 2,
+    borderLeftWidth: 2,
+    borderColor: HeritageColors.goldLight,
+    borderTopLeftRadius: 8,
+  },
+
+  scanCornerTopRight: {
+    position: "absolute",
+    top: 20,
+    right: 20,
+    width: 30,
+    height: 30,
+    borderTopWidth: 2,
+    borderRightWidth: 2,
+    borderColor: HeritageColors.goldLight,
+    borderTopRightRadius: 8,
+  },
+
+  scanCornerBottomLeft: {
+    position: "absolute",
+    bottom: 20,
+    left: 20,
+    width: 30,
+    height: 30,
+    borderBottomWidth: 2,
+    borderLeftWidth: 2,
+    borderColor: HeritageColors.goldLight,
+    borderBottomLeftRadius: 8,
+  },
+
+  scanCornerBottomRight: {
+    position: "absolute",
+    bottom: 20,
+    right: 20,
+    width: 30,
+    height: 30,
+    borderBottomWidth: 2,
+    borderRightWidth: 2,
+    borderColor: HeritageColors.goldLight,
+    borderBottomRightRadius: 8,
   },
 
   scannerIcon: {
-    width: 84,
-    height: 84,
+    width: 96,
+    height: 96,
     alignItems: "center",
     justifyContent: "center",
-    borderRadius: 28,
-    backgroundColor: HeritageColors.surfaceSoft,
+    borderRadius: 32,
+    backgroundColor: "rgba(197,140,255,0.055)",
     borderWidth: 1,
     borderColor: HeritageColors.borderStrong,
+    shadowColor: "#C58CFF",
+    shadowOffset: {
+      width: 0,
+      height: 0,
+    },
+    shadowOpacity: 0.12,
+    shadowRadius: 18,
+    elevation: 5,
+  },
+
+  scanHint: {
+    position: "absolute",
+    bottom: 14,
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 6,
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    borderRadius: HeritageRadius.pill,
+    borderWidth: 1,
+    borderColor: HeritageColors.borderStrong,
+    backgroundColor: "rgba(23,20,17,0.72)",
+  },
+
+  scanHintDot: {
+    width: 6,
+    height: 6,
+    borderRadius: 3,
+    backgroundColor: HeritageColors.goldLight,
+  },
+
+  scanHintText: {
+    color: HeritageColors.muted,
+    fontSize: 9,
+    fontWeight: "800",
+    letterSpacing: 1.2,
   },
 
   panelTitle: {
-    marginTop: 22,
+    marginTop: 20,
     color: HeritageColors.ivory,
     textAlign: "center",
-    fontSize: HeritageTypography.heading,
+    fontSize: 22,
     lineHeight: 28,
-    fontWeight: "800",
+    fontWeight: "900",
+    letterSpacing: -0.35,
   },
 
   panelDescription: {
     marginTop: 10,
+    paddingHorizontal: 4,
     color: HeritageColors.muted,
     textAlign: "center",
-    fontSize: HeritageTypography.body,
-    lineHeight: 22,
+    fontSize: 14,
+    lineHeight: 21,
   },
 
   actionGroup: {
     width: "100%",
-    gap: 10,
-    marginTop: 24,
+    gap: 11,
+    marginTop: 26,
   },
 
   primaryButton: {
@@ -1106,3 +1298,6 @@ const styles = StyleSheet.create({
     lineHeight: 18,
   },
 });
+
+
+

@@ -1,9 +1,12 @@
-"use client";
+﻿"use client";
 
 import { Download, Smartphone, Sparkles } from "lucide-react";
 
 import { useEffect, useState } from "react";
 import { useAuth } from "@/providers/AuthProvider";
+
+const ANDROID_DOWNLOAD_URL =
+  "https://github.com/srivanihemadri/heritageai/releases/download/v1.0.0/HeritageAI.apk";
 
 export default function AppDownloadSection() {
   const { isAuthenticated, isLoading } = useAuth();
@@ -16,12 +19,10 @@ export default function AppDownloadSection() {
 
     if (window.location.hash === "#download-app") {
       requestAnimationFrame(() => {
-        document
-          .getElementById("download-app")
-          ?.scrollIntoView({
-            behavior: "smooth",
-            block: "start",
-          });
+        document.getElementById("download-app")?.scrollIntoView({
+          behavior: "smooth",
+          block: "start",
+        });
       });
     }
   }, [isAuthenticated, isLoading]);
@@ -31,11 +32,8 @@ export default function AppDownloadSection() {
   }
 
   return (
-    <section
-      className="relative overflow-hidden py-14 sm:py-16"
-    >
+    <section className="relative overflow-hidden py-14 sm:py-16">
       <div className="heritage-container">
-
         <div className="heritage-glass-strong mx-auto mb-8 max-w-5xl rounded-[26px] p-5 sm:p-6">
           <div className="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
             <div>
@@ -54,7 +52,7 @@ export default function AppDownloadSection() {
               className="heritage-button heritage-button-gold heritage-gold-glow min-h-11 shrink-0 px-5"
             >
               Download App
-              <span aria-hidden="true">?</span>
+              <span aria-hidden="true">→</span>
             </a>
           </div>
         </div>
@@ -67,7 +65,6 @@ export default function AppDownloadSection() {
           <div className="pointer-events-none absolute -bottom-24 -left-24 h-72 w-72 rounded-full bg-[rgba(155,117,48,0.06)] blur-[100px]" />
 
           <div className="relative z-10 grid gap-0 lg:grid-cols-[1.05fr_0.95fr]">
-            {/* About-style content */}
             <div className="p-7 sm:p-10 lg:p-12">
               <div className="heritage-badge w-fit">
                 <Sparkles
@@ -112,7 +109,6 @@ export default function AppDownloadSection() {
               </div>
             </div>
 
-            {/* Download card */}
             <div className="flex items-center border-t border-[var(--glass-border)] bg-white/[0.02] p-7 sm:p-10 lg:border-l lg:border-t-0 lg:p-12">
               <div className="w-full">
                 <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl border border-[var(--glass-border)] bg-[rgba(212,175,90,0.08)]">
@@ -156,23 +152,38 @@ export default function AppDownloadSection() {
                   </button>
                 </div>
 
-                {platform && (
-                  <button
-                    type="button"
-                    disabled
-                    className="heritage-button heritage-button-gold mt-4 min-h-12 w-full cursor-not-allowed px-6 opacity-70"
-                  >
-                    <Download className="h-4 w-4" aria-hidden="true" />
-                    {platform === "android"
-                      ? "Coming Soon to Google Play"
-                      : "Coming Soon to the App Store"}
-                  </button>
+                {platform === "android" && (
+                  <>
+                    <a
+                      href={ANDROID_DOWNLOAD_URL}
+                      download
+                      className="heritage-button heritage-button-gold mt-4 flex min-h-12 w-full items-center justify-center gap-2 px-6"
+                    >
+                      <Download className="h-4 w-4" aria-hidden="true" />
+                      Download Android APK
+                    </a>
+
+                    <p className="mt-3 text-center text-[10px] uppercase tracking-[0.16em] text-[var(--heritage-bronze)]">
+                      HeritageAI Android • Version 1.0.0
+                    </p>
+                  </>
                 )}
 
-                {platform && (
-                  <p className="mt-3 text-center text-[10px] uppercase tracking-[0.16em] text-[var(--heritage-bronze)]">
-                    HeritageAI mobile app is currently under development
-                  </p>
+                {platform === "ios" && (
+                  <>
+                    <button
+                      type="button"
+                      disabled
+                      className="heritage-button heritage-button-gold mt-4 min-h-12 w-full cursor-not-allowed px-6 opacity-70"
+                    >
+                      <Download className="h-4 w-4" aria-hidden="true" />
+                      Coming Soon to the App Store
+                    </button>
+
+                    <p className="mt-3 text-center text-[10px] uppercase tracking-[0.16em] text-[var(--heritage-bronze)]">
+                      iOS version is currently under development
+                    </p>
+                  </>
                 )}
               </div>
             </div>

@@ -1,4 +1,4 @@
-import { Tabs } from "expo-router";
+﻿import { Tabs } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 
 import {
@@ -78,10 +78,25 @@ export default function AppLayout() {
       <Tabs.Screen
         name="ai"
         options={{
-          title: "AI",
+          title: "Chat AI",
+          tabBarActiveTintColor: "#C58CFF",
+          tabBarIcon: ({ color, focused }) => (
+            <Ionicons
+              name={focused ? "chatbubbles" : "chatbubbles-outline"}
+              color={color}
+              size={focused ? 29 : 23}
+            />
+          ),
+        }}
+      />
+
+      <Tabs.Screen
+        name="ai-scanner"
+        options={{
+          title: "Scanner",
           tabBarIcon: ({ color, size }) => (
             <Ionicons
-              name="sparkles-outline"
+              name="scan-outline"
               color={color}
               size={size}
             />
@@ -109,6 +124,13 @@ export default function AppLayout() {
           href: null,
         }}
       />
+      <Tabs.Screen
+        name="heritage/[siteId]"
+        options={{
+          href: null,
+        }}
+      />
+
 
       <Tabs.Screen
         name="ai-guide"
@@ -116,13 +138,9 @@ export default function AppLayout() {
           href: null,
         }}
       />
-
-      <Tabs.Screen
-        name="ai-scanner"
-        options={{
-          href: null,
-        }}
-      />
     </Tabs>
   );
 }
+
+
+
