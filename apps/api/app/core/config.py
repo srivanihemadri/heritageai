@@ -1,16 +1,10 @@
-﻿from pydantic_settings import BaseSettings, SettingsConfigDict
+from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class Settings(BaseSettings):
     APP_NAME: str
     APP_VERSION: str
     DEBUG: bool
-
-    MYSQL_HOST: str
-    MYSQL_PORT: int
-    MYSQL_USER: str
-    MYSQL_PASSWORD: str
-    MYSQL_DATABASE: str
 
     DATABASE_URL: str
 
@@ -46,6 +40,7 @@ class Settings(BaseSettings):
 
 
 settings = Settings()
+
 
 
 
