@@ -1,4 +1,4 @@
-import React from "react";
+﻿import React, { Suspense } from "react";
 import LoginForm from "@/components/auth/LoginForm";
 import LoginNotice from "@/components/auth/LoginNotice";
 
@@ -14,7 +14,13 @@ export default function LoginPage() {
       {
         className: "w-full max-w-md",
       },
-      React.createElement(LoginNotice),
+      React.createElement(
+        Suspense,
+        {
+          fallback: null,
+        },
+        React.createElement(LoginNotice),
+      ),
       React.createElement(LoginForm),
     ),
   );
