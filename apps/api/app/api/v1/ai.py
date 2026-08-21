@@ -18,7 +18,6 @@ from app.api.v1.contracts.ai import (
     GroundedAnswerSourceResponse,
     VoiceGuideResponse,
 )
-from app.dependencies import get_current_user
 from app.db.session import get_db
 from app.services.ai.generation import (
     GeminiQuotaExceededError,
@@ -84,7 +83,6 @@ router = APIRouter(
 )
 def grounded_answer(
     request: GroundedAnswerRequest,
-    current_user=Depends(get_current_user),
 ) -> GroundedAnswerResponse:
 
     service = None
@@ -184,7 +182,6 @@ def grounded_answer(
 )
 async def heritage_scan(
     file: UploadFile = File(...),
-    current_user=Depends(get_current_user),
     db: Session = Depends(get_db),
 ) -> HeritageScannerResponse:
     """Analyze an uploaded heritage image with multimodal AI."""
@@ -226,7 +223,6 @@ async def heritage_scan(
         repository = ScanRepository(db)
 
         scan = repository.create(
-            user_id=current_user.id,
             result=result.result,
         )
 
@@ -298,7 +294,6 @@ async def heritage_scan(
 )
 def get_scan(
     scan_id: str,
-    current_user=Depends(get_current_user),
     db: Session = Depends(get_db),
 ) -> HeritageScannerResponse:
 
@@ -306,7 +301,6 @@ def get_scan(
 
     scan = repository.get_by_id(
         scan_id=scan_id,
-        user_id=current_user.id,
     )
 
     if scan is None:
@@ -350,7 +344,6 @@ def get_scan(
 def list_scans(
     limit: int = 50,
     offset: int = 0,
-    current_user=Depends(get_current_user),
     db: Session = Depends(get_db),
 ) -> list[HeritageScannerResponse]:
 
@@ -368,8 +361,7 @@ def list_scans(
 
     repository = ScanRepository(db)
 
-    scans = repository.list_by_user(
-        user_id=current_user.id,
+    scans = repository.list_all(
         limit=limit,
         offset=offset,
     )
@@ -428,7 +420,6 @@ def list_scans(
 )
 async def ai_voice(
     file: UploadFile = File(...),
-    current_user=Depends(get_current_user),
 ) -> VoiceResponse:
     """Transcribe authenticated user voice input."""
 
@@ -519,7 +510,6 @@ async def ai_voice(
 )
 async def ai_voice_guide(
     file: UploadFile = File(...),
-    current_user=Depends(get_current_user),
 ) -> VoiceGuideResponse:
     """Run the complete authenticated HeritageAI Voice Guide pipeline."""
 
@@ -569,7 +559,7 @@ async def ai_voice_guide(
 
             storage_key = (
                 "voice-guide/"
-                f"{current_user.id}/"
+                "anonymous/"
                 f"{uuid.uuid4().hex}.wav"
             )
 
@@ -654,7 +644,6 @@ async def ai_voice_guide(
 async def enhance_heritage_image(
     file: UploadFile = File(...),
     resolution: str = "2K",
-    current_user=Depends(get_current_user),
 ):
     """Enhance a heritage image using Gemini image generation."""
 

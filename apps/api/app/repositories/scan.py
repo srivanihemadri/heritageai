@@ -8,7 +8,7 @@ from app.services.ai.scanner.contract import HeritageScannerResult
 
 
 class ScanRepository:
-    """Persistence boundary for authenticated heritage scanner results."""
+    """Persistence boundary for anonymous heritage scanner results."""
 
     def __init__(self, db: Session) -> None:
         self.db = db
@@ -16,11 +16,9 @@ class ScanRepository:
     def create(
         self,
         *,
-        user_id: str,
         result: HeritageScannerResult,
     ) -> Scan:
         scan = Scan(
-            user_id=user_id,
             identification_status=result.identification_status,
             evidence_quality=result.evidence_quality,
             identified_name=result.identified_name,
@@ -47,13 +45,11 @@ class ScanRepository:
         self,
         *,
         scan_id: str,
-        user_id: str,
     ) -> Scan | None:
         statement = (
             select(Scan)
             .where(
                 Scan.id == scan_id,
-                Scan.user_id == user_id,
             )
         )
 
@@ -61,18 +57,14 @@ class ScanRepository:
             statement
         ).scalar_one_or_none()
 
-    def list_by_user(
+    def list_all(
         self,
         *,
-        user_id: str,
         limit: int = 50,
         offset: int = 0,
     ) -> list[Scan]:
         statement = (
             select(Scan)
-            .where(
-                Scan.user_id == user_id,
-            )
             .order_by(
                 Scan.created_at.desc(),
             )

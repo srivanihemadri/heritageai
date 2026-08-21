@@ -6,8 +6,6 @@ from datetime import datetime
 from sqlalchemy import (
     DateTime,
     Float,
-    ForeignKey,
-    Index,
     JSON,
     String,
     Text,
@@ -19,30 +17,15 @@ from app.db.base import Base
 
 
 class Scan(Base):
-    """Persisted result of an authenticated heritage-image scan."""
+    """Persisted result of an anonymous heritage-image scan."""
 
     __tablename__ = "scans"
 
-    __table_args__ = (
-        Index(
-            "ix_scans_user_id_created_at",
-            "user_id",
-            "created_at",
-        ),
-    )
+    __table_args__ = ()
 
     id: Mapped[str] = mapped_column(
         primary_key=True,
         default=lambda: str(uuid.uuid4()),
-    )
-
-    user_id: Mapped[str] = mapped_column(
-        ForeignKey(
-            "users.id",
-            ondelete="CASCADE",
-        ),
-        nullable=False,
-        index=True,
     )
 
     identification_status: Mapped[str] = mapped_column(
